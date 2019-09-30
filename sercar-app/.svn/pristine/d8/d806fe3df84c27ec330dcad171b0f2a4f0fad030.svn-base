@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qppi.crud.dao.ComplaintMapper">
+<!-- 投诉建议信息 -->
+	<resultMap id="ComplaintMap" type="com.qppi.crud.bean.Complaint">
+		 <id column="COMPLAINT_ID" jdbcType="VARCHAR" property="complaintId" />
+		 <result column="CREATER_BY" jdbcType="VARCHAR" property="createrBy" />
+		 <result column="COMPLAINT_NAME" jdbcType="VARCHAR" property="complaintName" />
+		 <result column="COMPLAINT_TEL" jdbcType="VARCHAR" property="complaintTel" />
+		 <result column="COMPLAINT_CONTENT" jdbcType="VARCHAR" property="complaintContent" />
+		 <result column="COMPLAINT_TIME" jdbcType="VARCHAR" property="complaintTime" />
+		 <result column="STATE" jdbcType="VARCHAR" property="state" />
+		 <result column="YL1" jdbcType="VARCHAR" property="yl1" />
+		 <result column="YL2" jdbcType="VARCHAR" property="yl2" />
+		 <result column="YL3" jdbcType="VARCHAR" property="yl3" />
+		 <result column="YL4" jdbcType="VARCHAR" property="yl4" />
+		 <result column="YL5" jdbcType="VARCHAR" property="yl5" />
+		 <result column="YL6" jdbcType="VARCHAR" property="yl6" />
+		 <result column="YL7" jdbcType="VARCHAR" property="yl7" />
+		 <result column="YL8" jdbcType="VARCHAR" property="yl8" />
+		 <result column="YL9" jdbcType="VARCHAR" property="yl9" />
+		 <result column="YL10" jdbcType="VARCHAR" property="yl10" />
+		 <result column="YL11" jdbcType="VARCHAR" property="yl11" />
+    	 <result column="YL12" jdbcType="VARCHAR" property="yl12" />
+    	 <result column="YL13" jdbcType="VARCHAR" property="yl13" />
+    	 <result column="YL14" jdbcType="VARCHAR" property="yl14" />
+    	 <result column="YL15" jdbcType="VARCHAR" property="yl15" />
+    	 <result column="YL16" jdbcType="VARCHAR" property="yl16" />
+   	 	 <result column="YL17" jdbcType="VARCHAR" property="yl17" />
+    	 <result column="YL18" jdbcType="VARCHAR" property="yl18" />
+    	 <result column="YL19" jdbcType="VARCHAR" property="yl19" />
+    	 <result column="YL20" jdbcType="VARCHAR" property="yl20" />
+	</resultMap>
+  
+	<!-- 投诉建议字段-->
+	<sql id="Complaint_List">
+		COMPLAINT_ID, CREATER_BY, COMPLAINT_NAME, COMPLAINT_TEL, COMPLAINT_CONTENT, COMPLAINT_TIME, STATE, 
+		YL1, YL2, YL3, YL4, YL5, YL6, YL7, YL8, YL9, YL10,
+		YL11, YL12, YL13, YL14, YL15, YL16, YL17, YL18, YL19, YL20
+	</sql>
+	
+	<!-- 投诉建议查询 -->
+	<select id="selectComplaint" parameterType="com.qppi.crud.bean.Complaint" resultMap="ComplaintMap">
+		SELECT 
+			<include refid="Complaint_List" />
+		FROM
+			tb_complaint
+		WHERE
+			CREATER_BY = #{createrBy} order by COMPLAINT_TIME desc limit #{startRow},#{pageSize}
+	</select> 
+	
+	<!-- 投诉建议查询 -->
+	<select id="selectComplaintId" parameterType="com.qppi.crud.bean.Complaint" resultMap="ComplaintMap">
+		SELECT 
+			<include refid="Complaint_List" />
+		FROM
+			tb_complaint
+		WHERE
+			COMPLAINT_ID = #{complaintId}
+	</select> 
+	
+	
+	<!-- 投诉建议添加 -->
+	<insert id="insertComplaint" parameterType="com.qppi.crud.bean.Complaint">
+		INSERT INTO tb_complaint (
+			COMPLAINT_ID, CREATER_BY, COMPLAINT_NAME, COMPLAINT_TEL, COMPLAINT_CONTENT, COMPLAINT_TIME, STATE, 
+			YL1, YL2, YL3, YL4, YL5, YL6, YL7, YL8, YL9, YL10,
+			YL11, YL12, YL13, YL14, YL15, YL16, YL17, YL18, YL19, YL20
+		)VALUES(
+			#{complaintId,jdbcType=VARCHAR}, #{createrBy,jdbcType=VARCHAR}, #{complaintName,jdbcType=VARCHAR}, #{complaintTel,jdbcType=VARCHAR},
+			#{complaintContent,jdbcType=VARCHAR}, #{complaintTime,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR},
+			#{yl1,jdbcType=VARCHAR}, #{yl2,jdbcType=VARCHAR},  #{yl3,jdbcType=VARCHAR}, #{yl4,jdbcType=VARCHAR}, #{yl5,jdbcType=VARCHAR}, 
+			#{yl6,jdbcType=VARCHAR}, #{yl7,jdbcType=VARCHAR}, #{yl8,jdbcType=VARCHAR}, #{yl9,jdbcType=VARCHAR}, #{yl10,jdbcType=VARCHAR},
+			#{yl11,jdbcType=VARCHAR}, #{yl12,jdbcType=VARCHAR},  #{yl13,jdbcType=VARCHAR}, #{yl14,jdbcType=VARCHAR},#{yl15,jdbcType=VARCHAR},
+			#{yl16,jdbcType=VARCHAR}, #{yl17,jdbcType=VARCHAR}, #{yl18,jdbcType=VARCHAR}, #{yl19,jdbcType=VARCHAR}, #{yl20,jdbcType=VARCHAR}
+		)
+	 </insert>
+	
+	<select id="selectComplaintWx" parameterType="com.qppi.crud.bean.Complaint" resultMap="ComplaintMap">
+		SELECT 
+			<include refid="Complaint_List" />
+		FROM
+			tb_complaint
+		WHERE
+			YL1 = #{yl1} order by COMPLAINT_TIME desc 
+	</select> 
+	 
+</mapper>

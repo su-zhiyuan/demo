@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qppi.crud.dao.ArtificialMapper">
+	<!-- 智能记录-->
+	<resultMap id="RecordMap" type="com.qppi.crud.bean.Record">
+		 <id column="RECORD_ID" jdbcType="VARCHAR" property="recordId" />
+		 <result column="SENDER" jdbcType="VARCHAR" property="sender" />
+		 <result column="SENDING_TIME" jdbcType="VARCHAR" property="sendingTime" />
+		 <result column="SEND_CONTENT" jdbcType="VARCHAR" property="sendContent" />
+		 <result column="RECORD_CONTENT" jdbcType="VARCHAR" property="recordContent" />
+		 <result column="STATE" jdbcType="VARCHAR" property="state" />
+		 <result column="YL1" jdbcType="VARCHAR" property="yl1" />
+		 <result column="YL2" jdbcType="VARCHAR" property="yl2" />
+		 <result column="YL3" jdbcType="VARCHAR" property="yl3" />
+		 <result column="YL4" jdbcType="VARCHAR" property="yl4" />
+		 <result column="YL5" jdbcType="VARCHAR" property="yl5" />
+		 <result column="YL6" jdbcType="VARCHAR" property="yl6" />
+		 <result column="YL7" jdbcType="VARCHAR" property="yl7" />
+		 <result column="YL8" jdbcType="VARCHAR" property="yl8" />
+		 <result column="YL9" jdbcType="VARCHAR" property="yl9" />
+		 <result column="YL10" jdbcType="VARCHAR" property="yl10" />
+	</resultMap>
+	
+	<!-- 智能回复-->
+	<resultMap id="ArtificialMap" type="com.qppi.crud.bean.Artificial">
+		 <id column="INTELLIGENCE_ID" jdbcType="VARCHAR" property="intelligenceId" />
+		 <result column="REPLY" jdbcType="VARCHAR" property="reply" />
+		 <result column="REPLY_CONTENT" jdbcType="VARCHAR" property="replyContent" />
+		 <result column="CREATION_TIME" jdbcType="VARCHAR" property="creationTime" />
+		 <result column="STATE" jdbcType="VARCHAR" property="state" />
+		 <result column="YL1" jdbcType="VARCHAR" property="yl1" />
+		 <result column="YL2" jdbcType="VARCHAR" property="yl2" />
+		 <result column="YL3" jdbcType="VARCHAR" property="yl3" />
+		 <result column="YL4" jdbcType="VARCHAR" property="yl4" />
+		 <result column="YL5" jdbcType="VARCHAR" property="yl5" />
+		 <result column="YL6" jdbcType="VARCHAR" property="yl6" />
+		 <result column="YL7" jdbcType="VARCHAR" property="yl7" />
+		 <result column="YL8" jdbcType="VARCHAR" property="yl8" />
+		 <result column="YL9" jdbcType="VARCHAR" property="yl9" />
+		 <result column="YL10" jdbcType="VARCHAR" property="yl10" />
+	</resultMap>
+	
+	<!-- 人工回复记录-->
+	<resultMap id="ParityMap" type="com.qppi.crud.bean.Parity">
+		 <id column="ARTIFICIAL_ID" jdbcType="VARCHAR" property="artificialId" />
+		 <result column="SENDER" jdbcType="VARCHAR" property="sender" />
+		 <result column="RECIPIENT" jdbcType="VARCHAR" property="recipient" />
+		 <result column="TYPE" jdbcType="VARCHAR" property="type" />
+		 <result column="CONTENT" jdbcType="VARCHAR" property="content" />
+		 <result column="CREATE_TIME" jdbcType="VARCHAR" property="createTime" />
+		 <result column="STATE" jdbcType="VARCHAR" property="state" />
+		 <result column="YL1" jdbcType="VARCHAR" property="yl1" />
+		 <result column="YL2" jdbcType="VARCHAR" property="yl2" />
+		 <result column="YL3" jdbcType="VARCHAR" property="yl3" />
+		 <result column="YL4" jdbcType="VARCHAR" property="yl4" />
+		 <result column="YL5" jdbcType="VARCHAR" property="yl5" />
+		 <result column="YL6" jdbcType="VARCHAR" property="yl6" />
+		 <result column="YL7" jdbcType="VARCHAR" property="yl7" />
+		 <result column="YL8" jdbcType="VARCHAR" property="yl8" />
+		 <result column="YL9" jdbcType="VARCHAR" property="yl9" />
+		 <result column="YL10" jdbcType="VARCHAR" property="yl10" />
+	</resultMap>
+    
+	<!-- 智能记录字段 -->
+	<sql id="Record_List">
+		RECORD_ID, SENDER, SENDING_TIME, SEND_CONTENT, RECORD_CONTENT, STATE, 
+		YL1, YL2, YL3, YL4, YL5, YL6, YL7, YL8, YL9, YL10
+	</sql>
+	
+	<!-- 智能回复字段 -->
+	<sql id="Artificial_List">
+		INTELLIGENCE_ID, REPLY, REPLY_CONTENT, CREATION_TIME, STATE,  
+		YL1, YL2, YL3, YL4, YL5, YL6, YL7, YL8, YL9, YL10
+	</sql>
+	
+	<!-- 人工回复记录字段 -->
+	<sql id="Parity_List">
+		ARTIFICIAL_ID, SENDER, RECIPIENT, TYPE, CONTENT, CREATE_TIME, STATE,
+		YL1, YL2, YL3, YL4, YL5, YL6, YL7, YL8, YL9, YL10
+	</sql>
+	
+	<!-- 智能查询历史记录 -->
+	<select id="selectRecord" parameterType="com.qppi.crud.bean.Record" resultMap="RecordMap">
+		SELECT 
+			<include refid="Record_List" />
+		FROM
+			tb_record
+		WHERE
+			SENDER = #{sender}
+	</select> 
+	
+	<!-- 查询智能回复 -->
+	<select id="selectArtificial" parameterType="com.qppi.crud.bean.Artificial" resultMap="ArtificialMap">
+		SELECT 
+			<include refid="Artificial_List" />
+		FROM
+			tb_intelligence
+		WHERE
+			REPLY = #{reply}
+	</select>
+	 
+	<!-- 智能回复记录保存 -->
+	<insert id="insertRecord" parameterType="com.qppi.crud.bean.Record">
+		INSERT INTO tb_record (
+			RECORD_ID, SENDER, SENDING_TIME, SEND_CONTENT, RECORD_CONTENT, STATE, 
+			YL1, YL2, YL3, YL4, YL5, YL6, YL7, YL8, YL9, YL10
+		)VALUES(
+			#{recordId,jdbcType=VARCHAR}, #{sender,jdbcType=VARCHAR}, #{sendingTime,jdbcType=VARCHAR}, 
+			#{sendContent,jdbcType=VARCHAR}, #{recordContent,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, 
+			#{yl1,jdbcType=VARCHAR}, #{yl2,jdbcType=VARCHAR},  #{yl3,jdbcType=VARCHAR}, 
+			#{yl4,jdbcType=VARCHAR}, #{yl5,jdbcType=VARCHAR}, #{yl6,jdbcType=VARCHAR}, 
+			#{yl7,jdbcType=VARCHAR}, #{yl8,jdbcType=VARCHAR}, #{yl9,jdbcType=VARCHAR}, #{yl10,jdbcType=VARCHAR}
+		)
+	 </insert>
+	 
+	 <!-- 人工回复记录保存 -->
+	 <insert id="insertParity" parameterType="com.qppi.crud.bean.Parity" >
+	 	INSERT INTO tb_artificial (
+			ARTIFICIAL_ID, SENDER, RECIPIENT, TYPE, CONTENT, CREATE_TIME, STATE,
+			YL1, YL2, YL3, YL4, YL5, YL6, YL7, YL8, YL9, YL10
+		)VALUES(
+			#{artificialId,jdbcType=VARCHAR}, #{sender,jdbcType=VARCHAR}, #{recipient,jdbcType=VARCHAR}, 
+			#{type,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, 
+			#{yl1,jdbcType=VARCHAR}, #{yl2,jdbcType=VARCHAR},  #{yl3,jdbcType=VARCHAR}, 
+			#{yl4,jdbcType=VARCHAR}, #{yl5,jdbcType=VARCHAR}, #{yl6,jdbcType=VARCHAR}, 
+			#{yl7,jdbcType=VARCHAR}, #{yl8,jdbcType=VARCHAR}, #{yl9,jdbcType=VARCHAR}, #{yl10,jdbcType=VARCHAR}
+		)
+	 </insert>
+	 
+	 <!-- 查询人工回复记录 -->
+	 <select id="selectParity" parameterType="com.qppi.crud.bean.Parity" resultMap="ParityMap">
+		SELECT 
+			ARTIFICIAL_ID, SENDER, RECIPIENT, TYPE, CONTENT, CREATE_TIME, STATE
+		FROM
+			tb_artificial
+		WHERE
+			SENDER IN (#{recipient},#{sender})
+		AND RECIPIENT IN (#{recipient},#{sender})
+		ORDER BY CREATE_TIME ASC
+	 </select>
+</mapper>

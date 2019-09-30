@@ -1,0 +1,72 @@
+package com.qppi.crud.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.qppi.crud.bean.Repoinfo;
+import com.qppi.crud.bean.RepoinfoExample;
+import com.qppi.crud.dao.RepoinfoMapper;
+
+@Service
+public class RepoinfoService {
+	
+	@Autowired
+	private RepoinfoMapper repoinfoMapper;
+
+	public List<Repoinfo> selectList(String keyword, Integer page, Repoinfo repoinfo) {
+		RepoinfoExample example = new RepoinfoExample();
+		example.setOrderByClause("YL2 desc");
+		example.setPageSize(10);
+		example.setStartRow((page-1)*10);
+		RepoinfoExample.Criteria criteria1 = example.createCriteria();
+		RepoinfoExample.Criteria criteria2 = example.createCriteria();
+		String companyId = repoinfo.getYl10();
+		if(companyId != null && !"".equals(companyId)){
+			criteria1.andYl10EqualTo(companyId);
+			criteria2.andYl10EqualTo(companyId);
+		}
+		if(keyword != null && !"".equals(keyword)){
+			criteria1.andNameLike("%"+keyword+"%");
+			criteria2.andBianhaoLike("%"+keyword+"%");
+		}
+		example.or(criteria2);
+		List<Repoinfo> list = repoinfoMapper.selectByExample(example);
+		return list;
+	}
+
+	public Repoinfo selectGet(String repoinfoid) {
+		Repoinfo repoinfo = repoinfoMapper.selectByPrimaryKey(repoinfoid);
+		return repoinfo;
+	}
+
+	public boolean update(Repoinfo repo) {
+		try {
+			repoinfoMapper.updateByPrimaryKeySelective(repo);
+			return true;
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return false;
+		}
+		
+	}
+
+	public List<Repoinfo> selectLj(String keyword, String companyId) {
+		RepoinfoExample example = new RepoinfoExample();
+		RepoinfoExample.Criteria criteria = example.createCriteria();
+		if(companyId != null && !"".equals(companyId)){
+			criteria.andYl10EqualTo(companyId);
+		}
+		if(keyword != null && !"".equals(keyword)){
+			criteria.andNameLike("%"+keyword+"%");
+		}
+		List<Repoinfo> list = repoinfoMapper.selectByExample(example);
+		return list;
+	}
+
+
+
+
+}

@@ -1,0 +1,170 @@
+package com.qppi.crud.controller;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.qppi.crud.bean.Dictionaries;
+import com.qppi.crud.bean.Dsmx;
+import com.qppi.crud.bean.Order;
+import com.qppi.crud.bean.Pomx;
+import com.qppi.crud.bean.SName;
+import com.qppi.crud.bean.SType;
+import com.qppi.crud.bean.SysUser;
+import com.qppi.crud.bean.UserInfo;
+import com.qppi.crud.service.DictionariesService;
+import com.qppi.crud.service.DsmxService;
+import com.qppi.crud.service.OrderService;
+import com.qppi.crud.service.PartOfferMXService;
+import com.qppi.crud.service.SService;
+import com.qppi.crud.service.UserInfoService;
+import com.qppi.crud.utils.Msg;
+
+@Controller
+@RequestMapping("query")
+public class QueryController extends BaseController {
+	
+	@Autowired
+	private OrderService orderService;
+	@Autowired
+	private PartOfferMXService partOfferMXService;
+	@Autowired
+	private DsmxService dsmxService;
+	@Autowired
+	private SService sService;
+	@Autowired
+	private UserInfoService userInfoService;
+	@Autowired
+	private DictionariesService dictionariesService;
+
+	/**
+	 * 列表订单
+	 */
+	@RequestMapping("orderList")
+	@ResponseBody
+	public Msg orderList(Order order,HttpServletRequest request,int page, String keyword){
+		
+		List<Order> list2 = orderService.getList(order,page,keyword);
+		
+		List<Order> orderList = new ArrayList<Order>();
+		String username = getCurrentSysUser(request).getUsername();
+		UserInfo user = userInfoService.selectUserId(username);
+		String roletype = user.getRoletype();
+		String quanxian = dictionariesService.selectQuanXian(roletype);
+		//获取角色具有的权限
+		List<String> qxList = new ArrayList<String>();
+		quanxian = quanxian.replace("，", ",");
+		if(quanxian.contains(",")){
+			String[] split = quanxian.split(",");
+			for(int i=0; i<split.length; i++){
+				qxList.add(split[i]);
+			}
+		}else{
+			qxList.add(quanxian);
+		}
+		
+		//对应订单状态
+		List<String> ddList = new ArrayList<String>();
+		List<Dictionaries> dicList = dictionariesService.selectAllRoot();
+		for (String qx : qxList) {
+			for (Dictionaries dic : dicList) {
+				if(dic.getNameEn().equals(qx)){
+					String bz = dic.getBz();
+					if(bz.contains("-----")){
+						String[] split = bz.split("-----");
+						String status = split[1];
+						status = status.replace("，", ",");
+						if(status.contains(",")){
+							String[] s = status.split(",");
+							for(int i=0; i<s.length; i++){
+								ddList.add(s[i]);
+							}
+						}else{
+							ddList.add(status);
+						}
+					}
+					break;
+				}
+			}
+		}
+		
+		for (String status : ddList) {
+			order.setStatus(status);
+			List<Order> list = orderService.selectByStatus(order);
+			orderList.addAll(list);
+		}
+		
+		return Msg.success().add("result", list2).add("size", orderList.size());
+	}
+	
+	/**
+	 * 查询订单
+	 */
+	@RequestMapping("orderQuery")
+	@ResponseBody
+	public Msg orderQuery(Order order,HttpServletRequest request){
+		if(order.getOrderId() == null || order.getOrderId().equals("")){
+			return Msg.success().add("result", "orderId不能为空");
+		}else{			
+			return Msg.success().add("result", orderService.queryOrder(order));
+		}
+	}
+	
+	/**
+	 * 查询配件报价明细
+	 */
+	@RequestMapping("getPartsmx")
+	@ResponseBody
+	public Msg getPartsmx(Pomx pomx) {
+		return Msg.success().add("result", partOfferMXService.listByOrderId(pomx));
+	}
+	
+	/**
+	 * 查询工时报价明细
+	 */
+	@RequestMapping("getDsmxs")
+	@ResponseBody
+	public Msg getDsmxs(Dsmx dsmx){
+		return Msg.success().add("result", dsmxService.listByOrderid(dsmx));
+	}
+	
+	/**
+	 * 列表项目类型
+	 */
+	@RequestMapping("listST")
+	@ResponseBody
+	public Msg listST(HttpServletRequest request){
+		SysUser user = getCurrentSysUser(request);
+		String companyId = user.getUserInfo().getYl1();
+		List<SType> listST = sService.listST(companyId);
+		return Msg.success().add("result", listST);
+	}
+	
+	/**
+	 * 维修技师的列表
+	 */
+	@RequestMapping("listWXJS")
+	@ResponseBody
+	public Msg listWXJS(UserInfo userInfo){
+		List<UserInfo> list = userInfoService.selectRoleType(userInfo);
+		return Msg.success().add("result", list);
+	}
+	
+	/**
+	 * 列表项目名称
+	 */
+	@RequestMapping("listSN")
+	@ResponseBody
+	public Msg listSN(SName sname,String key){
+		List<SName> listSN = sService.listSN(sname, key);
+		return Msg.success().add("result", listSN);
+	}
+	
+	
+}

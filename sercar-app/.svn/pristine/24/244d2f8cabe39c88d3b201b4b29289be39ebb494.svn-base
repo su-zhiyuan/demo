@@ -1,0 +1,570 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qppi.crud.dao.ProclamationMapper">
+  <resultMap id="BaseResultMap" type="com.qppi.crud.bean.Proclamation">
+    <id column="PROCLAMATION_ID" jdbcType="VARCHAR" property="proclamationId" />
+    <result column="TITLE" jdbcType="VARCHAR" property="title" />
+    <result column="CONTENT" jdbcType="VARCHAR" property="content" />
+    <result column="TYPE" jdbcType="VARCHAR" property="type" />
+    <result column="STATUS" jdbcType="VARCHAR" property="status" />
+    <result column="CREATE_BY" jdbcType="VARCHAR" property="createBy" />
+    <result column="CREATE_TIME" jdbcType="VARCHAR" property="createTime" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+    <result column="YL1" jdbcType="VARCHAR" property="yl1" />
+    <result column="YL2" jdbcType="VARCHAR" property="yl2" />
+    <result column="YL3" jdbcType="VARCHAR" property="yl3" />
+    <result column="YL4" jdbcType="VARCHAR" property="yl4" />
+    <result column="YL5" jdbcType="VARCHAR" property="yl5" />
+    <result column="YL6" jdbcType="VARCHAR" property="yl6" />
+    <result column="YL7" jdbcType="VARCHAR" property="yl7" />
+    <result column="YL8" jdbcType="VARCHAR" property="yl8" />
+    <result column="YL9" jdbcType="VARCHAR" property="yl9" />
+    <result column="YL10" jdbcType="VARCHAR" property="yl10" />
+    <result column="YL11" jdbcType="VARCHAR" property="yl11" />
+    <result column="YL12" jdbcType="VARCHAR" property="yl12" />
+    <result column="YL13" jdbcType="VARCHAR" property="yl13" />
+    <result column="YL14" jdbcType="VARCHAR" property="yl14" />
+    <result column="YL15" jdbcType="VARCHAR" property="yl15" />
+    <result column="YL16" jdbcType="VARCHAR" property="yl16" />
+    <result column="YL17" jdbcType="VARCHAR" property="yl17" />
+    <result column="YL18" jdbcType="VARCHAR" property="yl18" />
+    <result column="YL19" jdbcType="VARCHAR" property="yl19" />
+    <result column="YL20" jdbcType="VARCHAR" property="yl20" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    PROCLAMATION_ID, TITLE, CONTENT, TYPE, STATUS, CREATE_BY, CREATE_TIME, REMARK, YL1, 
+    YL2, YL3, YL4, YL5, YL6, YL7, YL8, YL9, YL10, YL11, YL12, YL13, YL14, YL15, YL16, 
+    YL17, YL18, YL19, YL20
+  </sql>
+  <select id="selectByExample" parameterType="com.qppi.crud.bean.ProclamationExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_proclamation
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_proclamation
+    where PROCLAMATION_ID = #{proclamationId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from tb_proclamation
+    where PROCLAMATION_ID = #{proclamationId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.qppi.crud.bean.ProclamationExample">
+    delete from tb_proclamation
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.qppi.crud.bean.Proclamation">
+    insert into tb_proclamation (PROCLAMATION_ID, TITLE, CONTENT, 
+      TYPE, STATUS, CREATE_BY, 
+      CREATE_TIME, REMARK, YL1, 
+      YL2, YL3, YL4, YL5, 
+      YL6, YL7, YL8, YL9, 
+      YL10, YL11, YL12, YL13, 
+      YL14, YL15, YL16, YL17, 
+      YL18, YL19, YL20)
+    values (#{proclamationId,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{type,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{yl1,jdbcType=VARCHAR}, 
+      #{yl2,jdbcType=VARCHAR}, #{yl3,jdbcType=VARCHAR}, #{yl4,jdbcType=VARCHAR}, #{yl5,jdbcType=VARCHAR}, 
+      #{yl6,jdbcType=VARCHAR}, #{yl7,jdbcType=VARCHAR}, #{yl8,jdbcType=VARCHAR}, #{yl9,jdbcType=VARCHAR}, 
+      #{yl10,jdbcType=VARCHAR}, #{yl11,jdbcType=VARCHAR}, #{yl12,jdbcType=VARCHAR}, #{yl13,jdbcType=VARCHAR}, 
+      #{yl14,jdbcType=VARCHAR}, #{yl15,jdbcType=VARCHAR}, #{yl16,jdbcType=VARCHAR}, #{yl17,jdbcType=VARCHAR}, 
+      #{yl18,jdbcType=VARCHAR}, #{yl19,jdbcType=VARCHAR}, #{yl20,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.qppi.crud.bean.Proclamation">
+    insert into tb_proclamation
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="proclamationId != null">
+        PROCLAMATION_ID,
+      </if>
+      <if test="title != null">
+        TITLE,
+      </if>
+      <if test="content != null">
+        CONTENT,
+      </if>
+      <if test="type != null">
+        TYPE,
+      </if>
+      <if test="status != null">
+        STATUS,
+      </if>
+      <if test="createBy != null">
+        CREATE_BY,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="remark != null">
+        REMARK,
+      </if>
+      <if test="yl1 != null">
+        YL1,
+      </if>
+      <if test="yl2 != null">
+        YL2,
+      </if>
+      <if test="yl3 != null">
+        YL3,
+      </if>
+      <if test="yl4 != null">
+        YL4,
+      </if>
+      <if test="yl5 != null">
+        YL5,
+      </if>
+      <if test="yl6 != null">
+        YL6,
+      </if>
+      <if test="yl7 != null">
+        YL7,
+      </if>
+      <if test="yl8 != null">
+        YL8,
+      </if>
+      <if test="yl9 != null">
+        YL9,
+      </if>
+      <if test="yl10 != null">
+        YL10,
+      </if>
+      <if test="yl11 != null">
+        YL11,
+      </if>
+      <if test="yl12 != null">
+        YL12,
+      </if>
+      <if test="yl13 != null">
+        YL13,
+      </if>
+      <if test="yl14 != null">
+        YL14,
+      </if>
+      <if test="yl15 != null">
+        YL15,
+      </if>
+      <if test="yl16 != null">
+        YL16,
+      </if>
+      <if test="yl17 != null">
+        YL17,
+      </if>
+      <if test="yl18 != null">
+        YL18,
+      </if>
+      <if test="yl19 != null">
+        YL19,
+      </if>
+      <if test="yl20 != null">
+        YL20,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="proclamationId != null">
+        #{proclamationId,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="yl1 != null">
+        #{yl1,jdbcType=VARCHAR},
+      </if>
+      <if test="yl2 != null">
+        #{yl2,jdbcType=VARCHAR},
+      </if>
+      <if test="yl3 != null">
+        #{yl3,jdbcType=VARCHAR},
+      </if>
+      <if test="yl4 != null">
+        #{yl4,jdbcType=VARCHAR},
+      </if>
+      <if test="yl5 != null">
+        #{yl5,jdbcType=VARCHAR},
+      </if>
+      <if test="yl6 != null">
+        #{yl6,jdbcType=VARCHAR},
+      </if>
+      <if test="yl7 != null">
+        #{yl7,jdbcType=VARCHAR},
+      </if>
+      <if test="yl8 != null">
+        #{yl8,jdbcType=VARCHAR},
+      </if>
+      <if test="yl9 != null">
+        #{yl9,jdbcType=VARCHAR},
+      </if>
+      <if test="yl10 != null">
+        #{yl10,jdbcType=VARCHAR},
+      </if>
+      <if test="yl11 != null">
+        #{yl11,jdbcType=VARCHAR},
+      </if>
+      <if test="yl12 != null">
+        #{yl12,jdbcType=VARCHAR},
+      </if>
+      <if test="yl13 != null">
+        #{yl13,jdbcType=VARCHAR},
+      </if>
+      <if test="yl14 != null">
+        #{yl14,jdbcType=VARCHAR},
+      </if>
+      <if test="yl15 != null">
+        #{yl15,jdbcType=VARCHAR},
+      </if>
+      <if test="yl16 != null">
+        #{yl16,jdbcType=VARCHAR},
+      </if>
+      <if test="yl17 != null">
+        #{yl17,jdbcType=VARCHAR},
+      </if>
+      <if test="yl18 != null">
+        #{yl18,jdbcType=VARCHAR},
+      </if>
+      <if test="yl19 != null">
+        #{yl19,jdbcType=VARCHAR},
+      </if>
+      <if test="yl20 != null">
+        #{yl20,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.qppi.crud.bean.ProclamationExample" resultType="java.lang.Long">
+    select count(*) from tb_proclamation
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update tb_proclamation
+    <set>
+      <if test="record.proclamationId != null">
+        PROCLAMATION_ID = #{record.proclamationId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.title != null">
+        TITLE = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.content != null">
+        CONTENT = #{record.content,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null">
+        TYPE = #{record.type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null">
+        STATUS = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createBy != null">
+        CREATE_BY = #{record.createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        CREATE_TIME = #{record.createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null">
+        REMARK = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yl1 != null">
+        YL1 = #{record.yl1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yl2 != null">
+        YL2 = #{record.yl2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yl3 != null">
+        YL3 = #{record.yl3,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yl4 != null">
+        YL4 = #{record.yl4,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yl5 != null">
+        YL5 = #{record.yl5,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yl6 != null">
+        YL6 = #{record.yl6,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yl7 != null">
+        YL7 = #{record.yl7,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yl8 != null">
+        YL8 = #{record.yl8,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yl9 != null">
+        YL9 = #{record.yl9,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yl10 != null">
+        YL10 = #{record.yl10,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yl11 != null">
+        YL11 = #{record.yl11,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yl12 != null">
+        YL12 = #{record.yl12,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yl13 != null">
+        YL13 = #{record.yl13,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yl14 != null">
+        YL14 = #{record.yl14,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yl15 != null">
+        YL15 = #{record.yl15,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yl16 != null">
+        YL16 = #{record.yl16,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yl17 != null">
+        YL17 = #{record.yl17,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yl18 != null">
+        YL18 = #{record.yl18,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yl19 != null">
+        YL19 = #{record.yl19,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yl20 != null">
+        YL20 = #{record.yl20,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update tb_proclamation
+    set PROCLAMATION_ID = #{record.proclamationId,jdbcType=VARCHAR},
+      TITLE = #{record.title,jdbcType=VARCHAR},
+      CONTENT = #{record.content,jdbcType=VARCHAR},
+      TYPE = #{record.type,jdbcType=VARCHAR},
+      STATUS = #{record.status,jdbcType=VARCHAR},
+      CREATE_BY = #{record.createBy,jdbcType=VARCHAR},
+      CREATE_TIME = #{record.createTime,jdbcType=VARCHAR},
+      REMARK = #{record.remark,jdbcType=VARCHAR},
+      YL1 = #{record.yl1,jdbcType=VARCHAR},
+      YL2 = #{record.yl2,jdbcType=VARCHAR},
+      YL3 = #{record.yl3,jdbcType=VARCHAR},
+      YL4 = #{record.yl4,jdbcType=VARCHAR},
+      YL5 = #{record.yl5,jdbcType=VARCHAR},
+      YL6 = #{record.yl6,jdbcType=VARCHAR},
+      YL7 = #{record.yl7,jdbcType=VARCHAR},
+      YL8 = #{record.yl8,jdbcType=VARCHAR},
+      YL9 = #{record.yl9,jdbcType=VARCHAR},
+      YL10 = #{record.yl10,jdbcType=VARCHAR},
+      YL11 = #{record.yl11,jdbcType=VARCHAR},
+      YL12 = #{record.yl12,jdbcType=VARCHAR},
+      YL13 = #{record.yl13,jdbcType=VARCHAR},
+      YL14 = #{record.yl14,jdbcType=VARCHAR},
+      YL15 = #{record.yl15,jdbcType=VARCHAR},
+      YL16 = #{record.yl16,jdbcType=VARCHAR},
+      YL17 = #{record.yl17,jdbcType=VARCHAR},
+      YL18 = #{record.yl18,jdbcType=VARCHAR},
+      YL19 = #{record.yl19,jdbcType=VARCHAR},
+      YL20 = #{record.yl20,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.qppi.crud.bean.Proclamation">
+    update tb_proclamation
+    <set>
+      <if test="title != null">
+        TITLE = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        CONTENT = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        TYPE = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null">
+        CREATE_BY = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="yl1 != null">
+        YL1 = #{yl1,jdbcType=VARCHAR},
+      </if>
+      <if test="yl2 != null">
+        YL2 = #{yl2,jdbcType=VARCHAR},
+      </if>
+      <if test="yl3 != null">
+        YL3 = #{yl3,jdbcType=VARCHAR},
+      </if>
+      <if test="yl4 != null">
+        YL4 = #{yl4,jdbcType=VARCHAR},
+      </if>
+      <if test="yl5 != null">
+        YL5 = #{yl5,jdbcType=VARCHAR},
+      </if>
+      <if test="yl6 != null">
+        YL6 = #{yl6,jdbcType=VARCHAR},
+      </if>
+      <if test="yl7 != null">
+        YL7 = #{yl7,jdbcType=VARCHAR},
+      </if>
+      <if test="yl8 != null">
+        YL8 = #{yl8,jdbcType=VARCHAR},
+      </if>
+      <if test="yl9 != null">
+        YL9 = #{yl9,jdbcType=VARCHAR},
+      </if>
+      <if test="yl10 != null">
+        YL10 = #{yl10,jdbcType=VARCHAR},
+      </if>
+      <if test="yl11 != null">
+        YL11 = #{yl11,jdbcType=VARCHAR},
+      </if>
+      <if test="yl12 != null">
+        YL12 = #{yl12,jdbcType=VARCHAR},
+      </if>
+      <if test="yl13 != null">
+        YL13 = #{yl13,jdbcType=VARCHAR},
+      </if>
+      <if test="yl14 != null">
+        YL14 = #{yl14,jdbcType=VARCHAR},
+      </if>
+      <if test="yl15 != null">
+        YL15 = #{yl15,jdbcType=VARCHAR},
+      </if>
+      <if test="yl16 != null">
+        YL16 = #{yl16,jdbcType=VARCHAR},
+      </if>
+      <if test="yl17 != null">
+        YL17 = #{yl17,jdbcType=VARCHAR},
+      </if>
+      <if test="yl18 != null">
+        YL18 = #{yl18,jdbcType=VARCHAR},
+      </if>
+      <if test="yl19 != null">
+        YL19 = #{yl19,jdbcType=VARCHAR},
+      </if>
+      <if test="yl20 != null">
+        YL20 = #{yl20,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where PROCLAMATION_ID = #{proclamationId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.qppi.crud.bean.Proclamation">
+    update tb_proclamation
+    set TITLE = #{title,jdbcType=VARCHAR},
+      CONTENT = #{content,jdbcType=VARCHAR},
+      TYPE = #{type,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=VARCHAR},
+      CREATE_BY = #{createBy,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR},
+      YL1 = #{yl1,jdbcType=VARCHAR},
+      YL2 = #{yl2,jdbcType=VARCHAR},
+      YL3 = #{yl3,jdbcType=VARCHAR},
+      YL4 = #{yl4,jdbcType=VARCHAR},
+      YL5 = #{yl5,jdbcType=VARCHAR},
+      YL6 = #{yl6,jdbcType=VARCHAR},
+      YL7 = #{yl7,jdbcType=VARCHAR},
+      YL8 = #{yl8,jdbcType=VARCHAR},
+      YL9 = #{yl9,jdbcType=VARCHAR},
+      YL10 = #{yl10,jdbcType=VARCHAR},
+      YL11 = #{yl11,jdbcType=VARCHAR},
+      YL12 = #{yl12,jdbcType=VARCHAR},
+      YL13 = #{yl13,jdbcType=VARCHAR},
+      YL14 = #{yl14,jdbcType=VARCHAR},
+      YL15 = #{yl15,jdbcType=VARCHAR},
+      YL16 = #{yl16,jdbcType=VARCHAR},
+      YL17 = #{yl17,jdbcType=VARCHAR},
+      YL18 = #{yl18,jdbcType=VARCHAR},
+      YL19 = #{yl19,jdbcType=VARCHAR},
+      YL20 = #{yl20,jdbcType=VARCHAR}
+    where PROCLAMATION_ID = #{proclamationId,jdbcType=VARCHAR}
+  </update>
+</mapper>

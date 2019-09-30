@@ -1,0 +1,9 @@
+jdbc.jdbcUrl=jdbc:mysql://localhost:3306/fh-sercarweb?useUnicode=true&characterEncoding=UTF-8
+jdbc.driverClass=com.mysql.jdbc.Driver
+jdbc.user=root
+jdbc.password=root
+
+accessKeyId=LTAIi6o0zW1Mrnby
+accessKeySecret=JQgi1FAKkA3nSLJ29Wc9RRJNQ6UjYd
+signName=\u95F9\u95F9\u79D1\u6280
+templateCode=SMS_149095202

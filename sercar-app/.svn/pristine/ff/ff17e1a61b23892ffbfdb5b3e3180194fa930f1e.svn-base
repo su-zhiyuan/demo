@@ -1,0 +1,94 @@
+package com.qppi.crud.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.qppi.crud.bean.CaigouRC;
+import com.qppi.crud.bean.CaigouRCExample;
+import com.qppi.crud.dao.CaigouRCMapper;
+
+@Service
+public class CaiGourcService {
+
+	@Autowired
+	private CaigouRCMapper caigouRCMapper;
+
+	public boolean addCaiGou(CaigouRC caigouRC) {
+		try {
+			caigouRCMapper.insertSelective(caigouRC);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public List<CaigouRC> listCaiGou(CaigouRC caigouRC,int page) {
+		CaigouRCExample example = new CaigouRCExample();
+		example.setOrderByClause("CREATE_TIME desc");
+		if(page>0 && !"".equals(page)){
+			example.setPageSize(10);
+			example.setStartRow((page-1)*10);
+		}
+		CaigouRCExample.Criteria criteria = example.createCriteria();
+		
+		String companyId = caigouRC.getYl10();
+		if(null != companyId && !"".equals(companyId)){
+			criteria.andYl10EqualTo(companyId);
+		}
+		String username = caigouRC.getCreateBy();
+		if(null != username && !"".equals(username)){
+			criteria.andCreateByEqualTo(username);
+		}
+		String status = caigouRC.getStatus();
+		if(null != status && !"".equals(status)){
+			criteria.andStatusEqualTo(status);
+		}
+		
+		List<CaigouRC> list = caigouRCMapper.selectByExample(example);
+		return list;
+	}
+
+	public CaigouRC getCaiGou(String caigourcId) {
+		CaigouRC caigouRC = caigouRCMapper.selectByPrimaryKey(caigourcId);
+		return caigouRC;
+	}
+
+	public boolean editCaiGou(CaigouRC cg) {
+		try {
+			caigouRCMapper.updateByPrimaryKeySelective(cg);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public List<CaigouRC> selectDSP(CaigouRC c1) {
+		CaigouRCExample example = new CaigouRCExample();
+		CaigouRCExample.Criteria criteria = example.createCriteria();
+		String companyId = c1.getYl10();
+		if(companyId != null && !"".equals(companyId)){
+			criteria.andYl10EqualTo(companyId);
+		}
+		String status = c1.getStatus();
+		if(status != null && !"".equals(status)){
+			criteria.andStatusEqualTo(status);
+		}
+		List<CaigouRC> list = caigouRCMapper.selectByExample(example);
+		return list;
+	}
+
+	public boolean delete(CaigouRC caigouRC) {
+		try {
+			caigouRCMapper.deleteByPrimaryKey(caigouRC.getCaigourcId());
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}	
+	}
+
+}

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qppi.crud.dao.DepositMapper">
+  <resultMap id="BaseResultMap" type="com.qppi.crud.bean.Deposit">
+    <id column="DEPOSIT_ID" jdbcType="VARCHAR" property="depositId" />
+    <result column="ORDER_ID" jdbcType="VARCHAR" property="orderId" />
+    <result column="PARTOFFER_ID" jdbcType="VARCHAR" property="partofferId" />
+    <result column="POMX_ID" jdbcType="VARCHAR" property="pomxId" />
+    <result column="CONTACTS" jdbcType="VARCHAR" property="contacts" />
+    <result column="CONTACTSTEL" jdbcType="VARCHAR" property="contactsTel" />
+    <result column="DEPOSITMONEY" jdbcType="VARCHAR" property="depositMoney" />
+    <result column="STATE" jdbcType="VARCHAR" property="state" />
+    <result column="PAYMENTTIME" jdbcType="VARCHAR" property="paymentTime" />
+    <result column="CREATER" jdbcType="VARCHAR" property="creater" />
+    <result column="CREATIONTIME" jdbcType="VARCHAR" property="creationTime" />
+    <result column="REMARKS" jdbcType="VARCHAR" property="remarks" />
+    <result column="YL1" jdbcType="VARCHAR" property="yl1" />
+    <result column="YL2" jdbcType="VARCHAR" property="yl2" />
+    <result column="YL3" jdbcType="VARCHAR" property="yl3" />
+    <result column="YL4" jdbcType="VARCHAR" property="yl4" />
+    <result column="YL5" jdbcType="VARCHAR" property="yl5" />
+    <result column="YL6" jdbcType="VARCHAR" property="yl6" />
+    <result column="YL7" jdbcType="VARCHAR" property="yl7" />
+    <result column="YL8" jdbcType="VARCHAR" property="yl8" />
+    <result column="YL9" jdbcType="VARCHAR" property="yl9" />
+    <result column="YL10" jdbcType="VARCHAR" property="yl10" />
+  </resultMap>
+ 
+  <sql id="Base_Column_List">
+    DEPOSIT_ID, ORDER_ID, PARTOFFER_ID, POMX_ID, CONTACTS, CONTACTSTEL, DEPOSITMONEY, STATE,
+    PAYMENTTIME, CREATER, CREATIONTIME,  REMARKS, YL1, YL2, YL3, YL4, YL5, YL6, YL7, YL8, YL9, YL10
+  </sql>
+  <!-- 订金列表 -->
+  <select id="selectDJ" resultMap="BaseResultMap" parameterType="java.util.Map">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_deposit
+    ORDER BY CREATIONTIME DESC limit #{startRow},#{pageSize}
+  </select>
+  
+  <!-- 根据ID查询订金 -->
+  <select id="selectId" parameterType="com.qppi.crud.bean.Deposit" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_deposit
+    where DEPOSIT_ID = #{depositId}
+  </select>
+  
+  <!-- 新建订金 -->
+  <insert id="addDJ" parameterType="com.qppi.crud.bean.Deposit">
+  	INSERT INTO tb_deposit (
+	  DEPOSIT_ID, ORDER_ID, PARTOFFER_ID, POMX_ID,
+	  CONTACTS, CONTACTSTEL, DEPOSITMONEY, STATE,
+	  PAYMENTTIME, CREATER, CREATIONTIME,  REMARKS,
+	  YL1, YL2, YL3, YL4, YL5,
+	  YL6, YL7, YL8, YL9, YL10
+	) 
+	VALUES
+	  (#{depositId,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, #{partofferId,jdbcType=VARCHAR}, 
+	  #{pomxId,jdbcType=VARCHAR}, #{contacts,jdbcType=VARCHAR}, #{contactsTel,jdbcType=VARCHAR}, 
+	  #{depositMoney,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, #{paymentTime,jdbcType=VARCHAR},
+	  #{creater,jdbcType=VARCHAR}, #{creationTime,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR}, 
+	  #{yl1,jdbcType=VARCHAR}, #{yl2,jdbcType=VARCHAR}, #{yl3,jdbcType=VARCHAR},
+	  #{yl4,jdbcType=VARCHAR}, #{yl5,jdbcType=VARCHAR}, #{yl6,jdbcType=VARCHAR},
+	  #{yl7,jdbcType=VARCHAR}, #{yl8,jdbcType=VARCHAR}, #{yl9,jdbcType=VARCHAR},
+	  #{yl10,jdbcType=VARCHAR}
+	)
+  </insert>
+  
+  <!-- 根据ID修改订金 -->
+  <update id="updateID" parameterType="com.qppi.crud.bean.Deposit">
+    update tb_deposit
+    <set>
+      <if test="contacts != null">
+        CONTACTS = #{contacts,jdbcType=VARCHAR},
+      </if>
+      <if test="contactsTel != null">
+        CONTACTSTEL = #{contactsTel,jdbcType=VARCHAR},
+      </if>
+      <if test="depositMoney != null">
+        DEPOSITMONEY = #{depositMoney,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null">
+        REMARKS = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="yl1 != null">
+        yl1 = #{yl1,jdbcType=VARCHAR},
+      </if>
+      <if test="yl2 != null">
+        yl2 = #{yl2,jdbcType=VARCHAR},
+      </if>
+      <if test="yl3 != null">
+        yl3 = #{yl3,jdbcType=VARCHAR},
+      </if>
+      <if test="yl4 != null">
+        yl4 = #{yl4,jdbcType=VARCHAR},
+      </if>
+      <if test="yl5 != null">
+        yl5 = #{yl5,jdbcType=VARCHAR},
+      </if>
+      <if test="yl6 != null">
+        yl6 = #{yl6,jdbcType=VARCHAR},
+      </if>
+      <if test="yl7 != null">
+        yl7 = #{yl7,jdbcType=VARCHAR},
+      </if>
+      <if test="yl8 != null">
+        yl8 = #{yl8,jdbcType=VARCHAR},
+      </if>
+      <if test="yl9 != null">
+        yl9 = #{yl9,jdbcType=VARCHAR},
+      </if>
+      <if test="yl10 != null">
+        YL10 = #{yl10,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where DEPOSIT_ID = #{depositId,jdbcType=VARCHAR}
+  </update>
+</mapper>

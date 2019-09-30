@@ -1,0 +1,27 @@
+
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.qppi.crud.utils.Msg;
+
+@Controller
+@RequestMapping("kuaidi")
+public class KuaiDiController {
+	
+	@ResponseBody
+	@RequestMapping("getkuaidi")
+	public Msg getkuaidi(String expCode, String expNo){
+		
+		try {
+			String orderTracesByJson = ExpressUtils.getOrderTracesByJson(expCode, expNo);
+			System.err.println(orderTracesByJson);
+			return Msg.success().add("result",orderTracesByJson);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+}

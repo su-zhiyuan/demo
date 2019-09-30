@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qppi.crud.dao.FriendsMapper">
+  <resultMap id="BaseResultMap" type="com.qppi.crud.bean.Friends">
+    <id column="FRIENDS_ID" jdbcType="VARCHAR" property="friendsId" />
+    <result column="CREATE_BY" jdbcType="VARCHAR" property="createBy" />
+    <result column="CREATE_TIME" jdbcType="VARCHAR" property="createTime" />
+    <result column="FRIENDS" jdbcType="VARCHAR" property="friends" />
+    <result column="REMARKS" jdbcType="VARCHAR" property="remarks" />
+    <result column="UNREAD" jdbcType="VARCHAR" property="unread" />
+    <result column="YL1" jdbcType="VARCHAR" property="yl1" />
+    <result column="YL2" jdbcType="VARCHAR" property="yl2" />
+    <result column="YL3" jdbcType="VARCHAR" property="yl3" />
+    <result column="YL4" jdbcType="VARCHAR" property="yl4" />
+    <result column="YL5" jdbcType="VARCHAR" property="yl5" />
+    <result column="YL6" jdbcType="VARCHAR" property="yl6" />
+    <result column="YL7" jdbcType="VARCHAR" property="yl7" />
+    <result column="YL8" jdbcType="VARCHAR" property="yl8" />
+    <result column="YL9" jdbcType="VARCHAR" property="yl9" />
+    <result column="YL10" jdbcType="VARCHAR" property="yl10" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    FRIENDS_ID, CREATE_BY, CREATE_TIME, FRIENDS, REMARKS, UNREAD, YL1, YL2, YL3, YL4, 
+    YL5, YL6, YL7, YL8, YL9, YL10
+  </sql>
+  <select id="selectByExample" parameterType="com.qppi.crud.bean.FriendsExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_friends
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_friends
+    where FRIENDS_ID = #{friendsId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from tb_friends
+    where FRIENDS_ID = #{friendsId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.qppi.crud.bean.FriendsExample">
+    delete from tb_friends
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.qppi.crud.bean.Friends">
+    insert into tb_friends (FRIENDS_ID, CREATE_BY, CREATE_TIME, 
+      FRIENDS, REMARKS, UNREAD, 
+      YL1, YL2, YL3, YL4, 
+      YL5, YL6, YL7, YL8, 
+      YL9, YL10)
+    values (#{friendsId,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, 
+      #{friends,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR}, #{unread,jdbcType=VARCHAR}, 
+      #{yl1,jdbcType=VARCHAR}, #{yl2,jdbcType=VARCHAR}, #{yl3,jdbcType=VARCHAR}, #{yl4,jdbcType=VARCHAR}, 
+      #{yl5,jdbcType=VARCHAR}, #{yl6,jdbcType=VARCHAR}, #{yl7,jdbcType=VARCHAR}, #{yl8,jdbcType=VARCHAR}, 
+      #{yl9,jdbcType=VARCHAR}, #{yl10,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.qppi.crud.bean.Friends">
+    insert into tb_friends
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="friendsId != null">
+        FRIENDS_ID,
+      </if>
+      <if test="createBy != null">
+        CREATE_BY,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="friends != null">
+        FRIENDS,
+      </if>
+      <if test="remarks != null">
+        REMARKS,
+      </if>
+      <if test="unread != null">
+        UNREAD,
+      </if>
+      <if test="yl1 != null">
+        YL1,
+      </if>
+      <if test="yl2 != null">
+        YL2,
+      </if>
+      <if test="yl3 != null">
+        YL3,
+      </if>
+      <if test="yl4 != null">
+        YL4,
+      </if>
+      <if test="yl5 != null">
+        YL5,
+      </if>
+      <if test="yl6 != null">
+        YL6,
+      </if>
+      <if test="yl7 != null">
+        YL7,
+      </if>
+      <if test="yl8 != null">
+        YL8,
+      </if>
+      <if test="yl9 != null">
+        YL9,
+      </if>
+      <if test="yl10 != null">
+        YL10,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="friendsId != null">
+        #{friendsId,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="friends != null">
+        #{friends,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null">
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="unread != null">
+        #{unread,jdbcType=VARCHAR},
+      </if>
+      <if test="yl1 != null">
+        #{yl1,jdbcType=VARCHAR},
+      </if>
+      <if test="yl2 != null">
+        #{yl2,jdbcType=VARCHAR},
+      </if>
+      <if test="yl3 != null">
+        #{yl3,jdbcType=VARCHAR},
+      </if>
+      <if test="yl4 != null">
+        #{yl4,jdbcType=VARCHAR},
+      </if>
+      <if test="yl5 != null">
+        #{yl5,jdbcType=VARCHAR},
+      </if>
+      <if test="yl6 != null">
+        #{yl6,jdbcType=VARCHAR},
+      </if>
+      <if test="yl7 != null">
+        #{yl7,jdbcType=VARCHAR},
+      </if>
+      <if test="yl8 != null">
+        #{yl8,jdbcType=VARCHAR},
+      </if>
+      <if test="yl9 != null">
+        #{yl9,jdbcType=VARCHAR},
+      </if>
+      <if test="yl10 != null">
+        #{yl10,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.qppi.crud.bean.FriendsExample" resultType="java.lang.Long">
+    select count(*) from tb_friends
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update tb_friends
+    <set>
+      <if test="record.friendsId != null">
+        FRIENDS_ID = #{record.friendsId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createBy != null">
+        CREATE_BY = #{record.createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        CREATE_TIME = #{record.createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.friends != null">
+        FRIENDS = #{record.friends,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remarks != null">
+        REMARKS = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.unread != null">
+        UNREAD = #{record.unread,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yl1 != null">
+        YL1 = #{record.yl1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yl2 != null">
+        YL2 = #{record.yl2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yl3 != null">
+        YL3 = #{record.yl3,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yl4 != null">
+        YL4 = #{record.yl4,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yl5 != null">
+        YL5 = #{record.yl5,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yl6 != null">
+        YL6 = #{record.yl6,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yl7 != null">
+        YL7 = #{record.yl7,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yl8 != null">
+        YL8 = #{record.yl8,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yl9 != null">
+        YL9 = #{record.yl9,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yl10 != null">
+        YL10 = #{record.yl10,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update tb_friends
+    set FRIENDS_ID = #{record.friendsId,jdbcType=VARCHAR},
+      CREATE_BY = #{record.createBy,jdbcType=VARCHAR},
+      CREATE_TIME = #{record.createTime,jdbcType=VARCHAR},
+      FRIENDS = #{record.friends,jdbcType=VARCHAR},
+      REMARKS = #{record.remarks,jdbcType=VARCHAR},
+      UNREAD = #{record.unread,jdbcType=VARCHAR},
+      YL1 = #{record.yl1,jdbcType=VARCHAR},
+      YL2 = #{record.yl2,jdbcType=VARCHAR},
+      YL3 = #{record.yl3,jdbcType=VARCHAR},
+      YL4 = #{record.yl4,jdbcType=VARCHAR},
+      YL5 = #{record.yl5,jdbcType=VARCHAR},
+      YL6 = #{record.yl6,jdbcType=VARCHAR},
+      YL7 = #{record.yl7,jdbcType=VARCHAR},
+      YL8 = #{record.yl8,jdbcType=VARCHAR},
+      YL9 = #{record.yl9,jdbcType=VARCHAR},
+      YL10 = #{record.yl10,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.qppi.crud.bean.Friends">
+    update tb_friends
+    <set>
+      <if test="createBy != null">
+        CREATE_BY = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="friends != null">
+        FRIENDS = #{friends,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null">
+        REMARKS = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="unread != null">
+        UNREAD = #{unread,jdbcType=VARCHAR},
+      </if>
+      <if test="yl1 != null">
+        YL1 = #{yl1,jdbcType=VARCHAR},
+      </if>
+      <if test="yl2 != null">
+        YL2 = #{yl2,jdbcType=VARCHAR},
+      </if>
+      <if test="yl3 != null">
+        YL3 = #{yl3,jdbcType=VARCHAR},
+      </if>
+      <if test="yl4 != null">
+        YL4 = #{yl4,jdbcType=VARCHAR},
+      </if>
+      <if test="yl5 != null">
+        YL5 = #{yl5,jdbcType=VARCHAR},
+      </if>
+      <if test="yl6 != null">
+        YL6 = #{yl6,jdbcType=VARCHAR},
+      </if>
+      <if test="yl7 != null">
+        YL7 = #{yl7,jdbcType=VARCHAR},
+      </if>
+      <if test="yl8 != null">
+        YL8 = #{yl8,jdbcType=VARCHAR},
+      </if>
+      <if test="yl9 != null">
+        YL9 = #{yl9,jdbcType=VARCHAR},
+      </if>
+      <if test="yl10 != null">
+        YL10 = #{yl10,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where FRIENDS_ID = #{friendsId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.qppi.crud.bean.Friends">
+    update tb_friends
+    set CREATE_BY = #{createBy,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=VARCHAR},
+      FRIENDS = #{friends,jdbcType=VARCHAR},
+      REMARKS = #{remarks,jdbcType=VARCHAR},
+      UNREAD = #{unread,jdbcType=VARCHAR},
+      YL1 = #{yl1,jdbcType=VARCHAR},
+      YL2 = #{yl2,jdbcType=VARCHAR},
+      YL3 = #{yl3,jdbcType=VARCHAR},
+      YL4 = #{yl4,jdbcType=VARCHAR},
+      YL5 = #{yl5,jdbcType=VARCHAR},
+      YL6 = #{yl6,jdbcType=VARCHAR},
+      YL7 = #{yl7,jdbcType=VARCHAR},
+      YL8 = #{yl8,jdbcType=VARCHAR},
+      YL9 = #{yl9,jdbcType=VARCHAR},
+      YL10 = #{yl10,jdbcType=VARCHAR}
+    where FRIENDS_ID = #{friendsId,jdbcType=VARCHAR}
+  </update>
+</mapper>

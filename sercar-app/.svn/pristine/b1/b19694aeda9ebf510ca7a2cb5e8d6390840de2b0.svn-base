@@ -1,0 +1,18 @@
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.qppi.crud.utils.Msg;
+
+@Controller
+@RequestMapping("zfb")
+public class JsoupTest {
+
+	@RequestMapping("jieshou")
+	@ResponseBody
+	public Msg jieshou(){
+		
+		
+		return null;
+	}
+}

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+
+  <context id="DB2Tables" targetRuntime="MyBatis3">
+  
+    <commentGenerator>
+	  <property name="suppressAllComments" value="true" />
+	</commentGenerator>
+  
+  	<!-- 配置数据库连接信息 -->
+    <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+        connectionURL="jdbc:mysql://localhost:3306/fh-sercarweb"
+        userId="root"
+        password="root">
+    </jdbcConnection>
+
+    <javaTypeResolver >
+      <property name="forceBigDecimals" value="false" />
+    </javaTypeResolver>
+
+	<!-- 指定javabean生成的位置 -->
+    <javaModelGenerator targetPackage="com.qppi.crud.bean" 
+    					targetProject=".\src\main\java">
+      <property name="enableSubPackages" value="true" />
+      <property name="trimStrings" value="true" />
+    </javaModelGenerator>
+
+	<!-- 指定sql映射文件生成的位置 -->
+    <sqlMapGenerator targetPackage="mapper"  
+    				 targetProject=".\src\main\resources">
+      <property name="enableSubPackages" value="true" />
+    </sqlMapGenerator>
+
+	<!-- 指定dao接口文件生成的位置 -->
+    <javaClientGenerator type="XMLMAPPER" targetPackage="com.qppi.crud.dao" targetProject=".\src\main\java">
+      <property name="enableSubPackages" value="true" />
+    </javaClientGenerator>
+	<!-- <table tableName="tb_bulletinad" domainObjectName="BulletinAd"></table>
+	<table tableName="tb_carinfo" domainObjectName="CarInfo"></table>
+	<table tableName="tb_companyinfo" domainObjectName="CompanyInfo"></table>
+	<table tableName="tb_contacts" domainObjectName="Contacts"></table>
+	<table tableName="tb_dispatching" domainObjectName="Dispatching"></table>
+	<table tableName="tb_dsmx" domainObjectName="Dsmx"></table>
+	<table tableName="tb_inforelay" domainObjectName="InfoRelay"></table>
+	<table tableName="tb_mycollection" domainObjectName="MyCollection"></table>
+	<table tableName="tb_order" domainObjectName="Order"></table> -->
+	<!--<table tableName="tb_partoffer" domainObjectName="PartOffer"></table> -->
+	<!-- <table tableName="tb_pomx" domainObjectName="Pomx"></table>
+	<table tableName="tb_purchase" domainObjectName="Purchase"></table>
+	<table tableName="tb_reception" domainObjectName="Reception"></table> -->
+	
+	<!-- <table tableName="tb_repochange" domainObjectName="RepoChange"></table>
+	<table tableName="tb_repoinfo" domainObjectName="RepoInfo"></table>
+	<table tableName="tb_settlement" domainObjectName="Settlement"></table>
+	<table tableName="tb_userinfo" domainObjectName="UserInfo"></table>
+	<table tableName="sys_user" domainObjectName="SysUser"></table> -->
+	
+	<!-- <table tableName="tb_bulletinad" domainObjectName="Bulletinad"></table>
+	<table tableName="tb_companyinfo" domainObjectName="CompanyInfo"></table>
+	<table tableName="tb_mycollection" domainObjectName="MyCollection"></table>
+	<table tableName="tb_repochange" domainObjectName="RepoChange"></table> -->
+	
+	<!-- <table tableName="tb_proclamation" domainObjectName="Proclamation"></table>
+	<table tableName="tb_advertising" domainObjectName="Advertising"></table>
+	<table tableName="tb_expenditurestatement" domainObjectName="ExpenditureStatement"></table>
+	<table tableName="tb_revenuestatement" domainObjectName="RevenueStatement"></table> -->
+	
+	<!-- <table tableName="tb_messageinfo" domainObjectName="MessageInfo"></table> -->
+	
+	<!-- <table tableName="tb_stype" domainObjectName="SType"></table>
+	<table tableName="tb_sname" domainObjectName="SName"></table> -->
+	<!-- <table tableName="tb_paymentrequest" domainObjectName="Paymentrequest"></table> -->
+	<!-- <table tableName="tb_applypyj" domainObjectName="Applypyj"></table> -->
+	<!--<table tableName="tb_baoxiao" domainObjectName="Baoxiao"></table> -->
+	<!--<table tableName="tb_applyjb" domainObjectName="Applyjb"></table> -->
+	<!--<table tableName="tb_evection" domainObjectName="Evection"></table>-->
+	<!--<table tableName="tb_outside" domainObjectName="Outside"></table>-->
+	<!--<table tableName="tb_leave" domainObjectName="Leave"></table>-->
+	<!--<table tableName="tb_memo" domainObjectName="Memo"></table>
+	<table tableName="tb_cardclock" domainObjectName="Cardclock"></table>-->
+	
+<!-- 	<table tableName="sys_dictionaries" domainObjectName="Dictionaries"></table> -->
+
+<!-- 	<table tableName="tb_resume" domainObjectName="Resume"></table> -->
+	<!-- <table tableName="tb_goods" domainObjectName="GoodsRC"></table>
+	<table tableName="tb_caigourc" domainObjectName="CaigouRC"></table> -->
+	<!-- <table tableName="tb_yonggong" domainObjectName="YongGong"></table> -->
+  </context>
+</generatorConfiguration>

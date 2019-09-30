@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qppi.crud.dao.ExpenditureStatementMapper">
+  <resultMap id="BaseResultMap" type="com.qppi.crud.bean.ExpenditureStatement">
+    <id column="EXPENDITURESTATEMENT_ID" jdbcType="VARCHAR" property="expenditurestatementId" />
+    <result column="CREATE_BY" jdbcType="VARCHAR" property="createBy" />
+    <result column="CREATE_TIME" jdbcType="VARCHAR" property="createTime" />
+    <result column="SUBJECT_PAYMENT" jdbcType="VARCHAR" property="subjectPayment" />
+    <result column="TOTAL" jdbcType="VARCHAR" property="total" />
+    <result column="LSH1" jdbcType="VARCHAR" property="lsh1" />
+    <result column="LSH2" jdbcType="VARCHAR" property="lsh2" />
+    <result column="HAPPEN_DATE" jdbcType="VARCHAR" property="happenDate" />
+    <result column="EXPEND_NAME" jdbcType="VARCHAR" property="expendName" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+    <result column="YL1" jdbcType="VARCHAR" property="yl1" />
+    <result column="YL2" jdbcType="VARCHAR" property="yl2" />
+    <result column="YL3" jdbcType="VARCHAR" property="yl3" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    EXPENDITURESTATEMENT_ID, CREATE_BY, CREATE_TIME, SUBJECT_PAYMENT, TOTAL, LSH1, LSH2, 
+    HAPPEN_DATE, EXPEND_NAME, REMARK, YL1, YL2, YL3
+  </sql>
+  <select id="selectByExample" parameterType="com.qppi.crud.bean.ExpenditureStatementExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_expenditurestatement
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_expenditurestatement
+    where EXPENDITURESTATEMENT_ID = #{expenditurestatementId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from tb_expenditurestatement
+    where EXPENDITURESTATEMENT_ID = #{expenditurestatementId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.qppi.crud.bean.ExpenditureStatementExample">
+    delete from tb_expenditurestatement
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.qppi.crud.bean.ExpenditureStatement">
+    insert into tb_expenditurestatement (EXPENDITURESTATEMENT_ID, CREATE_BY, 
+      CREATE_TIME, SUBJECT_PAYMENT, TOTAL, 
+      LSH1, LSH2, HAPPEN_DATE, 
+      EXPEND_NAME, REMARK, YL1, 
+      YL2, YL3)
+    values (#{expenditurestatementId,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=VARCHAR}, #{subjectPayment,jdbcType=VARCHAR}, #{total,jdbcType=VARCHAR}, 
+      #{lsh1,jdbcType=VARCHAR}, #{lsh2,jdbcType=VARCHAR}, #{happenDate,jdbcType=VARCHAR}, 
+      #{expendName,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{yl1,jdbcType=VARCHAR}, 
+      #{yl2,jdbcType=VARCHAR}, #{yl3,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.qppi.crud.bean.ExpenditureStatement">
+    insert into tb_expenditurestatement
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="expenditurestatementId != null">
+        EXPENDITURESTATEMENT_ID,
+      </if>
+      <if test="createBy != null">
+        CREATE_BY,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="subjectPayment != null">
+        SUBJECT_PAYMENT,
+      </if>
+      <if test="total != null">
+        TOTAL,
+      </if>
+      <if test="lsh1 != null">
+        LSH1,
+      </if>
+      <if test="lsh2 != null">
+        LSH2,
+      </if>
+      <if test="happenDate != null">
+        HAPPEN_DATE,
+      </if>
+      <if test="expendName != null">
+        EXPEND_NAME,
+      </if>
+      <if test="remark != null">
+        REMARK,
+      </if>
+      <if test="yl1 != null">
+        YL1,
+      </if>
+      <if test="yl2 != null">
+        YL2,
+      </if>
+      <if test="yl3 != null">
+        YL3,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="expenditurestatementId != null">
+        #{expenditurestatementId,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectPayment != null">
+        #{subjectPayment,jdbcType=VARCHAR},
+      </if>
+      <if test="total != null">
+        #{total,jdbcType=VARCHAR},
+      </if>
+      <if test="lsh1 != null">
+        #{lsh1,jdbcType=VARCHAR},
+      </if>
+      <if test="lsh2 != null">
+        #{lsh2,jdbcType=VARCHAR},
+      </if>
+      <if test="happenDate != null">
+        #{happenDate,jdbcType=VARCHAR},
+      </if>
+      <if test="expendName != null">
+        #{expendName,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="yl1 != null">
+        #{yl1,jdbcType=VARCHAR},
+      </if>
+      <if test="yl2 != null">
+        #{yl2,jdbcType=VARCHAR},
+      </if>
+      <if test="yl3 != null">
+        #{yl3,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.qppi.crud.bean.ExpenditureStatementExample" resultType="java.lang.Long">
+    select count(*) from tb_expenditurestatement
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update tb_expenditurestatement
+    <set>
+      <if test="record.expenditurestatementId != null">
+        EXPENDITURESTATEMENT_ID = #{record.expenditurestatementId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createBy != null">
+        CREATE_BY = #{record.createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        CREATE_TIME = #{record.createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.subjectPayment != null">
+        SUBJECT_PAYMENT = #{record.subjectPayment,jdbcType=VARCHAR},
+      </if>
+      <if test="record.total != null">
+        TOTAL = #{record.total,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lsh1 != null">
+        LSH1 = #{record.lsh1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lsh2 != null">
+        LSH2 = #{record.lsh2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.happenDate != null">
+        HAPPEN_DATE = #{record.happenDate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.expendName != null">
+        EXPEND_NAME = #{record.expendName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null">
+        REMARK = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yl1 != null">
+        YL1 = #{record.yl1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yl2 != null">
+        YL2 = #{record.yl2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yl3 != null">
+        YL3 = #{record.yl3,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update tb_expenditurestatement
+    set EXPENDITURESTATEMENT_ID = #{record.expenditurestatementId,jdbcType=VARCHAR},
+      CREATE_BY = #{record.createBy,jdbcType=VARCHAR},
+      CREATE_TIME = #{record.createTime,jdbcType=VARCHAR},
+      SUBJECT_PAYMENT = #{record.subjectPayment,jdbcType=VARCHAR},
+      TOTAL = #{record.total,jdbcType=VARCHAR},
+      LSH1 = #{record.lsh1,jdbcType=VARCHAR},
+      LSH2 = #{record.lsh2,jdbcType=VARCHAR},
+      HAPPEN_DATE = #{record.happenDate,jdbcType=VARCHAR},
+      EXPEND_NAME = #{record.expendName,jdbcType=VARCHAR},
+      REMARK = #{record.remark,jdbcType=VARCHAR},
+      YL1 = #{record.yl1,jdbcType=VARCHAR},
+      YL2 = #{record.yl2,jdbcType=VARCHAR},
+      YL3 = #{record.yl3,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.qppi.crud.bean.ExpenditureStatement">
+    update tb_expenditurestatement
+    <set>
+      <if test="createBy != null">
+        CREATE_BY = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectPayment != null">
+        SUBJECT_PAYMENT = #{subjectPayment,jdbcType=VARCHAR},
+      </if>
+      <if test="total != null">
+        TOTAL = #{total,jdbcType=VARCHAR},
+      </if>
+      <if test="lsh1 != null">
+        LSH1 = #{lsh1,jdbcType=VARCHAR},
+      </if>
+      <if test="lsh2 != null">
+        LSH2 = #{lsh2,jdbcType=VARCHAR},
+      </if>
+      <if test="happenDate != null">
+        HAPPEN_DATE = #{happenDate,jdbcType=VARCHAR},
+      </if>
+      <if test="expendName != null">
+        EXPEND_NAME = #{expendName,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="yl1 != null">
+        YL1 = #{yl1,jdbcType=VARCHAR},
+      </if>
+      <if test="yl2 != null">
+        YL2 = #{yl2,jdbcType=VARCHAR},
+      </if>
+      <if test="yl3 != null">
+        YL3 = #{yl3,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where EXPENDITURESTATEMENT_ID = #{expenditurestatementId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.qppi.crud.bean.ExpenditureStatement">
+    update tb_expenditurestatement
+    set CREATE_BY = #{createBy,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=VARCHAR},
+      SUBJECT_PAYMENT = #{subjectPayment,jdbcType=VARCHAR},
+      TOTAL = #{total,jdbcType=VARCHAR},
+      LSH1 = #{lsh1,jdbcType=VARCHAR},
+      LSH2 = #{lsh2,jdbcType=VARCHAR},
+      HAPPEN_DATE = #{happenDate,jdbcType=VARCHAR},
+      EXPEND_NAME = #{expendName,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR},
+      YL1 = #{yl1,jdbcType=VARCHAR},
+      YL2 = #{yl2,jdbcType=VARCHAR},
+      YL3 = #{yl3,jdbcType=VARCHAR}
+    where EXPENDITURESTATEMENT_ID = #{expenditurestatementId,jdbcType=VARCHAR}
+  </update>
+</mapper>
