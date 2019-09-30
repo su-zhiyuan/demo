@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CompanyInfoMapper">
+	
+	<!--表名 -->
+	<sql id="tableName">
+		TB_COMPANYINFO
+	</sql>
+	
+	<!-- 字段 -->
+	<sql id="Field">
+		COMPANY_NAME,	
+		COMPANY_ADDR,	
+		COMPANY_LOGO,	
+		COMPANY_JJ,	
+		YL1,	
+		YL2,	
+		YL3,
+		yl4,
+		yl5,
+		yl6,
+		yl7,
+		yl8,
+		yl9,
+		yl10,
+		yl11,
+		yl12,
+		yl13,
+		yl14,
+		yl15,
+		yl16,
+		yl17,
+		yl18,
+		yl19,
+		yl20,	
+		COMPANYINFO_ID
+	</sql>
+	
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{COMPANY_NAME},	
+		#{COMPANY_ADDR},	
+		#{COMPANY_LOGO},	
+		#{COMPANY_JJ},	
+		#{YL1},	
+		#{YL2},	
+		#{YL3},	
+		#{yl4},
+		#{yl5},
+		#{yl6},
+		#{yl7},
+		#{yl8},
+		#{yl9},
+		#{yl10},
+		#{yl11},
+		#{yl12},
+		#{yl13},
+		#{yl14},
+		#{yl15},
+		#{yl16},
+		#{yl17},
+		#{yl18},
+		#{yl19},
+		#{yl20},
+		#{COMPANYINFO_ID}
+	</sql>
+	
+	<!-- 新增-->
+	<insert id="save" parameterType="pd">
+		insert into 
+	<include refid="tableName"></include>
+		(
+	<include refid="Field"></include>
+		) values (
+	<include refid="FieldValue"></include>
+		)
+	</insert>
+	
+	<!-- 删除-->
+	<delete id="delete" parameterType="pd">
+		delete from
+		<include refid="tableName"></include>
+		where 
+			COMPANYINFO_ID = #{COMPANYINFO_ID}
+	</delete>
+	
+	<!-- 修改 -->
+	<update id="edit" parameterType="pd">
+		update
+		<include refid="tableName"></include>
+		set 		
+			COMPANY_NAME = #{COMPANY_NAME},
+			COMPANY_ADDR = #{COMPANY_ADDR},
+			COMPANY_LOGO = #{COMPANY_LOGO},
+			COMPANY_JJ = #{COMPANY_JJ},
+			YL1 = #{YL1},
+			YL2 = #{YL2},
+			YL3 = #{YL3},
+			yl4 = #{yl4},
+			yl5 = #{yl5},
+			yl6 = #{yl6},
+			yl7 = #{yl7},
+			yl8 = #{yl8},
+			yl9 = #{yl9},
+			yl10 = #{yl10},
+			yl11 = #{yl11},
+			yl12 = #{yl12},
+			yl13 = #{yl13},
+			yl14 = #{yl14},
+			yl15 = #{yl15},
+			yl16 = #{yl16},
+			yl17 = #{yl17},
+			yl18 = #{yl18},
+			yl19 = #{yl19},
+			yl20 = #{yl20},
+		COMPANYINFO_ID = COMPANYINFO_ID
+		where 
+		COMPANYINFO_ID = #{COMPANYINFO_ID}
+	</update>
+	
+	<!-- 通过ID获取数据 -->
+	<select id="findById" parameterType="pd" resultType="pd">
+		select 
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
+		where COMPANYINFO_ID = #{COMPANYINFO_ID}
+	</select>
+	
+	<!-- 列表 -->
+	<select id="datalistPage" parameterType="page" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
+		where 1=1
+		<if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
+			and
+				(
+					COMPANY_NAME LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+					 or 
+					COMPANY_ADDR LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%') 
+				)
+		</if>
+		<if test="pd.COMPANYINFO_ID!= null and pd.COMPANYINFO_ID != ''">
+		and COMPANYINFO_ID =#{pd.COMPANYINFO_ID}
+		</if>
+	</select>
+	
+	<!-- 列表(全部) -->
+	<select id="listAll" parameterType="pd" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
+	</select>
+	
+	<!-- 批量删除 -->
+	<delete id="deleteAll" parameterType="String">
+		delete from
+		<include refid="tableName"></include>
+		where 
+			COMPANYINFO_ID in
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+                 #{item}
+		</foreach>
+	</delete>
+	
+	<!-- fh313596790qq(青苔) -->
+</mapper>

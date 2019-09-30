@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BaoxiaoMapper">
+	
+	<!--表名 -->
+	<sql id="tableName">
+		TB_BAOXIAO
+	</sql>
+	
+	<!-- 字段 -->
+	<sql id="Field">
+		TYPE,	
+		TOTAL,	
+		EXPLAINS,	
+		REMARK,	
+		YL1,	
+		YL2,	
+		YL3,	
+		YL4,
+		YL5,
+		YL6,
+		YL7,
+		YL8,
+		YL9,
+		YL10,
+		YL11,	
+		YL12,	
+		YL13,	
+		YL14,
+		YL15,
+		YL16,
+		YL17,
+		YL18,
+		YL19,
+		YL20,	
+		BAOXIAO_ID
+	</sql>
+	
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{TYPE},	
+		#{TOTAL},	
+		#{EXPLAINS},	
+		#{REMARK},	
+		#{YL1},	
+		#{YL2},	
+		#{YL3},	
+		#{YL4},
+		#{YL5},
+		#{YL6},	
+		#{YL7},	
+		#{YL8},	
+		#{YL9},
+		#{YL10},
+		#{YL11},	
+		#{YL12},	
+		#{YL13},	
+		#{YL14},
+		#{YL15},
+		#{YL16},	
+		#{YL17},	
+		#{YL18},	
+		#{YL19},
+		#{YL20},	
+		#{BAOXIAO_ID}
+	</sql>
+	
+	<!-- 新增-->
+	<insert id="save" parameterType="pd">
+		insert into 
+	<include refid="tableName"></include>
+		(
+	<include refid="Field"></include>
+		) values (
+	<include refid="FieldValue"></include>
+		)
+	</insert>
+	
+	<!-- 删除-->
+	<delete id="delete" parameterType="pd">
+		delete from
+		<include refid="tableName"></include>
+		where 
+			BAOXIAO_ID = #{BAOXIAO_ID}
+	</delete>
+	
+	<!-- 修改 -->
+	<update id="edit" parameterType="pd">
+		update
+		<include refid="tableName"></include>
+		set 
+			TYPE = #{TYPE},
+			TOTAL = #{TOTAL},
+			EXPLAINS = #{EXPLAINS},
+			REMARK = #{REMARK},
+			YL1 = #{YL1},
+			YL2 = #{YL2},
+			YL3 = #{YL3},
+			YL4 = #{YL4},
+			YL5 = #{YL5},
+			YL6 = #{YL6},
+			YL7 = #{YL7},
+			YL8 = #{YL8},
+			YL9 = #{YL9},
+			YL10 = #{YL10},
+			YL11 = #{YL11},
+			YL12 = #{YL12},
+			YL13 = #{YL13},
+			YL14 = #{YL14},
+			YL15 = #{YL15},
+			YL16 = #{YL16},
+			YL17 = #{YL17},
+			YL18 = #{YL18},
+			YL19 = #{YL19},
+			YL20 = #{YL20},
+		BAOXIAO_ID = BAOXIAO_ID
+		where 
+		BAOXIAO_ID = #{BAOXIAO_ID}
+	</update>
+	
+	<!-- 通过ID获取数据 -->
+	<select id="findById" parameterType="pd" resultType="pd">
+		select 
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
+		where 
+			BAOXIAO_ID = #{BAOXIAO_ID}
+	</select>
+	
+	<!-- 列表 -->
+	<select id="datalistPage" parameterType="page" resultType="pd">
+		SELECT b.*,u.NAME AS uNAME FROM TB_USERINFO u,TB_BAOXIAO b WHERE u.USERNAME = b.YL3
+		<if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
+			and (
+				b.YL3 LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+				or
+				u.NAME LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+			)
+						
+		</if>
+		<if test=" pd.lastStart!= null and pd.lastStart != '' ">
+			and b.YL2 &gt;=  #{pd.lastStart }
+		</if>
+		
+		<if test=" pd.lastEnd!=null and pd.lastEnd !=''">
+			and b.YL2 &lt;=  #{pd.lastEnd }
+		</if>
+		<if test="pd.name != null and pd.name != ''">
+			and b.YL1=#{pd.name}
+		</if>
+		<if test="pd.TYPE != null and pd.TYPE != ''">
+			and b.TYPE = #{pd.TYPE}
+		</if>
+		<if test=" pd.YL1!=null and pd.YL1 !=''">
+			and b.YL1=#{pd.YL1 }
+		</if>
+		<if test=" pd.YL3!=null and pd.YL3 !=''">
+			and b.YL3=#{pd.YL3 }
+		</if>
+		<if test=" pd.YL5!=null and pd.YL5 !=''">
+			and b.YL5=#{pd.YL5 }
+		</if>
+		<if test="pd.YL10!=null and pd.YL10 !=''">
+			and b.YL10=#{pd.YL10 }
+		</if>
+		ORDER BY b.YL2 DESC
+	</select>
+	
+	<!-- 报销人统计 -->
+	<select id="people" parameterType="page" resultType="pd">
+	SELECT 
+	  DISTINCT YL3
+	FROM
+	  TB_BAOXIAO
+	where
+		YL5=#{pd.YL5} 
+	<if test="pd.YL1!=null and pd.YL1 !=''">
+		and YL1=#{pd.YL1 }
+	</if>
+	<if test="pd.YL10!=null and pd.YL10 !=''">
+		and YL10=#{pd.YL10 }
+	</if>
+  </select>
+	
+	<!-- 列表(全部) -->
+	<select id="listAll" parameterType="pd" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
+	</select>
+	
+	<!-- 批量删除 -->
+	<delete id="deleteAll" parameterType="String">
+		delete from
+		<include refid="tableName"></include>
+		where 
+			BAOXIAO_ID in
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+                 #{item}
+		</foreach>
+	</delete>
+	
+	<!-- fh313596790qq(青苔) -->
+</mapper>

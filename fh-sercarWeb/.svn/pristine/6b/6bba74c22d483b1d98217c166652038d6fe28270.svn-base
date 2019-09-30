@@ -1,0 +1,163 @@
+package com.fh.controller.sercar.jiaoche;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.fh.controller.base.BaseController;
+import com.fh.entity.Page;
+import com.fh.service.sercar.order.OrderManager;
+import com.fh.service.sercar.userinfo.UserInfoManager;
+import com.fh.service.system.dictionaries.DictionariesManager;
+import com.fh.service.system.user.UserManager;
+import com.fh.util.Jurisdiction;
+import com.fh.util.PageData;
+import com.fh.util.Tools;
+import com.fh.util.my.MyTools;
+
+@Controller
+@RequestMapping(value="/jiaoche")
+public class JiaocheController extends BaseController{
+	
+	String menuUrl = "jiaoche/list.do"; //菜单地址(权限用)
+	@Resource(name="userinfoService")
+	private UserInfoManager userinfoService;
+	@Resource(name="userService")
+	private UserManager userService;
+	@Resource(name="orderService")
+	private OrderManager orderService;
+	@Resource(name="dictionariesService")
+	private DictionariesManager dictionariesService;
+	
+	/**列表
+	 * @param page
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/list")
+	public ModelAndView list(Page page) throws Exception{
+		logBefore(logger, Jurisdiction.getUsername()+"列表Order");
+		ModelAndView mv = this.getModelAndView();
+		
+		String username = Jurisdiction.getUsername();
+		PageData pd = new PageData();
+		pd.put("USERNAME", username);
+		PageData user = userinfoService.findByUsername(pd);
+		String gsId = user.getString("YL1");
+		
+		PageData pd_order = new PageData();
+		pd_order.put("YL10", gsId);
+		page.setPd(pd_order);
+		List<PageData> orderList = orderService.findByCondition(page);
+		
+		mv.setViewName("sercar/jiaoche/jiaoche_list");
+		mv.addObject("list",orderList);
+		mv.addObject("QX",Jurisdiction.getHC());	//按钮权限
+		return mv;
+	}
+	
+	//同意放行---已付款agreePassPay
+	@RequestMapping(value="/agreePassPay")
+	@ResponseBody
+	public Object agreePassPay() throws Exception{
+		logBefore(logger, Jurisdiction.getUsername()+"批量删除Reception");
+		PageData pd = new PageData();		
+		pd = this.getPageData();
+		PageData order = orderService.findById(pd);
+		order.put("STATUS", "同意放行---已付款");
+		order.put("OUT_TIME", MyTools.getTime());
+		orderService.edit(order);
+		return "success";
+	}
+	
+	//拒绝放行disAgreePass
+	@RequestMapping(value="/disAgreePass")
+	@ResponseBody
+	public Object disAgreePass() throws Exception{
+		logBefore(logger, Jurisdiction.getUsername()+"批量删除Reception");
+		PageData pd = new PageData();		
+		pd = this.getPageData();
+		PageData order = orderService.findById(pd);
+		order.put("STATUS", "拒绝放行");
+		orderService.edit(order);
+		return "success";
+	}
+	
+	//同意放行---未付款goAgreePassNopay
+	@RequestMapping(value="/goAgreePassNopay")
+	public ModelAndView goAgreePassNopay()throws Exception{
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		PageData order = orderService.findById(pd);	//根据ID读取
+		
+		String gsid = order.getString("YL10");
+		Page page_user = new Page();
+		PageData pd_user = new PageData();
+		pd_user.put("YL1", gsid);
+		page_user.setPd(pd_user);
+		List<PageData> userList = userinfoService.findByCondition(page_user);
+		mv.setViewName("sercar/jiaoche/jiaoche_danbao");
+		mv.addObject("pd", order);
+		mv.addObject("userList", userList);
+		return mv;
+	}
+	
+	//请求担保askDanBao
+	@RequestMapping(value="/askDanBao")
+	@ResponseBody
+	public ModelAndView askDanBao() throws Exception{
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();	
+		pd = this.getPageData();
+		
+		String username = pd.getString("username");
+		String phone = pd.getString("phone");
+		
+		PageData order = orderService.findById(pd);
+		
+		order.put("YL15", username);
+		order.put("YL16", phone);
+		order.put("STATUS", "待担保人确认");
+		orderService.edit(order);
+		
+		sendYuanGong(username, "有订单需要担保");
+		
+		mv.addObject("msg","success");
+		mv.setViewName("save_result");
+		return mv;
+	}
+	
+
+	//发送消息到员工微信
+	public void sendYuanGong(String username,String contant) {
+		try {
+			PageData pd_dic = new PageData();
+			pd_dic.put("BIANMA", "wxpath");
+			PageData path = dictionariesService.findByBianma(pd_dic);
+			String baseUrl = path.getString("BZ");
+			
+			if(username != null){
+				PageData pd_user = new PageData();
+				pd_user.put("USERNAME", username);
+				PageData userInfo = userinfoService.findByUsername(pd_user);
+				
+				String wxid = userInfo.getString("YL7");
+				if("开".equals(userInfo.getString("YL8")) && wxid != null){
+					String url = baseUrl+"/wx/sendFuhe?openid="+wxid+"&contant="+contant;
+					String doHttpGet = Tools.doHttpGet(url);
+					System.out.println(doHttpGet);
+					System.err.println("发送完成");
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+}

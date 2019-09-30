@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PartOfferMapper">
+	
+	<!--表名 -->
+	<sql id="tableName">
+		TB_PARTOFFER
+	</sql>
+	
+	<!-- 字段 -->
+	<sql id="Field">
+		ORDER_ID,	
+		STATUS,	
+		CREATE_BY,	
+		CREATE_TIME,	
+		CHECKED_BY,	
+		CHECKED_TIME,	
+		OFFER_BY,	
+		SALE_BY,	
+		TOTAL,	
+		REMARK,	
+		YL1,	
+		YL2,	
+		YL3,	
+		YL4,
+		YL5,
+		YL6,
+		YL7,
+		YL8,
+		YL9,
+		YL10,
+		YL11,	
+		YL12,	
+		YL13,	
+		YL14,
+		YL15,
+		YL16,
+		YL17,
+		YL18,
+		YL19,
+		YL20,		
+		PARTOFFER_ID
+	</sql>
+	
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{ORDER_ID},	
+		#{STATUS},	
+		#{CREATE_BY},	
+		#{CREATE_TIME},	
+		#{CHECKED_BY},	
+		#{CHECKED_TIME},	
+		#{OFFER_BY},	
+		#{SALE_BY},	
+		#{TOTAL},	
+		#{REMARK},	
+		#{YL1},	
+		#{YL2},	
+		#{YL3},	
+		#{YL4},
+		#{YL5},
+		#{YL6},	
+		#{YL7},	
+		#{YL8},	
+		#{YL9},
+		#{YL10},
+		#{YL11},	
+		#{YL12},	
+		#{YL13},	
+		#{YL14},
+		#{YL15},
+		#{YL16},	
+		#{YL17},	
+		#{YL18},	
+		#{YL19},
+		#{YL20},	
+		#{PARTOFFER_ID}
+	</sql>
+	
+	<!-- 新增-->
+	<insert id="save" parameterType="pd">
+		insert into 
+	<include refid="tableName"></include>
+		(
+	<include refid="Field"></include>
+		) values (
+	<include refid="FieldValue"></include>
+		)
+	</insert>
+	
+	<!-- 删除-->
+	<delete id="delete" parameterType="pd">
+		delete from
+		<include refid="tableName"></include>
+		where 
+			PARTOFFER_ID = #{PARTOFFER_ID}
+	</delete>
+	
+	<!-- 修改 -->
+	<update id="edit" parameterType="pd">
+		update
+		<include refid="tableName"></include>
+		set 
+			ORDER_ID = #{ORDER_ID},
+			STATUS = #{STATUS},
+			CREATE_BY = #{CREATE_BY},
+			CREATE_TIME = #{CREATE_TIME},
+			CHECKED_BY = #{CHECKED_BY},
+			CHECKED_TIME = #{CHECKED_TIME},
+			OFFER_BY = #{OFFER_BY},
+			SALE_BY = #{SALE_BY},
+			TOTAL = #{TOTAL},
+			REMARK = #{REMARK},
+			YL1 = #{YL1},
+			YL2 = #{YL2},
+			YL3 = #{YL3},
+			YL4 = #{YL4},
+			YL5 = #{YL5},
+			YL6 = #{YL6},
+			YL7 = #{YL7},
+			YL8 = #{YL8},
+			YL9 = #{YL9},
+			YL10 = #{YL10},
+			YL11 = #{YL11},
+			YL12 = #{YL12},
+			YL13 = #{YL13},
+			YL14 = #{YL14},
+			YL15 = #{YL15},
+			YL16 = #{YL16},
+			YL17 = #{YL17},
+			YL18 = #{YL18},
+			YL19 = #{YL19},
+			YL20 = #{YL20},
+		PARTOFFER_ID = PARTOFFER_ID
+		where 
+		PARTOFFER_ID = #{PARTOFFER_ID}
+	</update>
+	
+	<!-- 通过ID获取数据 -->
+	<select id="findById" parameterType="pd" resultType="pd">
+		select 
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
+		where 
+			PARTOFFER_ID = #{PARTOFFER_ID}
+	</select>
+	
+	<!-- 列表 -->
+	<select id="datalistPage" parameterType="page" resultType="pd">
+		
+SELECT
+*
+FROM
+(SELECT p.*,u.`NAME` as uName FROM tb_userinfo u,tb_partoffer p WHERE u.USERNAME = p.CREATE_BY) AS pn
+LEFT JOIN
+(SELECT p.PARTOFFER_ID as cid,u.`NAME` as cName FROM tb_userinfo u,tb_partoffer p WHERE u.USERNAME = p.CHECKED_BY) as cn
+ON pn.PARTOFFER_ID = cn.cid 
+LEFT JOIN
+(SELECT p.PARTOFFER_ID as oid,u.`NAME` as oName FROM tb_userinfo u,tb_partoffer p WHERE u.USERNAME = p.OFFER_BY) as bn
+ON pn.PARTOFFER_ID = bn.oid 
+LEFT JOIN
+(SELECT p.PARTOFFER_ID as sid,u.`NAME` as sName FROM tb_userinfo u,tb_partoffer p WHERE u.USERNAME = p.SALE_BY) as sn
+ON pn.PARTOFFER_ID = sn.sid 
+		where 1=1
+		<if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
+			and
+				(
+					pn.ORDER_ID LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+					 or 
+					pn.CREATE_BY LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%') 
+					or 
+					pn.CHECKED_BY LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+					or 
+					pn.OFFER_BY LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+					or 
+					pn.SALE_BY LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+					or
+					cn.cName LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+					or
+					pn.uName LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+					or
+					bn.oName LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+					or
+					sn.sName LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+				)
+		</if>
+		<if test="pd.lastStart != null and pd.lastStart != '' and pd.lastEnd != null and pd.lastEnd != ''">
+		and
+			(
+					pn.CREATE_TIME &gt;= #{pd.lastStart} and
+					pn.CREATE_TIME &lt;= #{pd.lastEnd}
+			)
+		</if>
+		<if test="pd.name!= null and pd.name != ''">
+			and
+				(
+					pn.STATUS LIKE CONCAT(CONCAT('%', #{pd.name}),'%')
+				)
+		</if>
+		<if test="pd.YL10 != null and pd.YL10 != ''">
+			and
+				(
+					pn.YL10 =#{pd.YL10}
+				)
+		</if>
+		order by pn.CREATE_TIME desc
+	</select>
+	
+	<!-- 列表(全部) -->
+	<select id="listAll" parameterType="pd" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
+	</select>
+	
+	<!-- 批量删除 -->
+	<delete id="deleteAll" parameterType="String">
+		delete from
+		<include refid="tableName"></include>
+		where 
+			PARTOFFER_ID in
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+                 #{item}
+		</foreach>
+	</delete>
+	
+	<select id="findByCondition" parameterType="page" resultType="pd">
+		SELECT
+		*
+		FROM 
+		<include refid="tableName"></include>
+		where
+		1=1 
+		<if test="pd.ORDER_ID != null and pd.ORDER_ID != ''">
+			and ORDER_ID = #{pd.ORDER_ID}
+		</if>
+		<if test="pd.YL10 != null and pd.YL10 != ''">
+			and YL10 = #{pd.YL10}
+		</if>
+		<if test="pd.STATUS != null and pd.STATUS != ''">
+			and STATUS = #{pd.STATUS}
+		</if>
+		order by CREATE_TIME desc
+	</select>
+	
+	<!-- fh313596790qq(青苔) -->
+</mapper>

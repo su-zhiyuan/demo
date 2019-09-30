@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CardclockMapper">
+	
+	<!--表名 -->
+	<sql id="tableName">
+		TB_CARDCLOCK
+	</sql>
+	
+	<!-- 字段 -->
+	<sql id="Field">
+		DATE,	
+		UPDATETIME,	
+		DOWNTIME,	
+		UPPLACE,	
+		DOWNPLACE,	
+		REMARK,	
+		YL1,	
+		YL2,	
+		YL3,	
+		YL4,
+		YL5,
+		YL6,
+		YL7,
+		YL8,
+		YL9,
+		YL10,
+		YL11,	
+		YL12,	
+		YL13,	
+		YL14,
+		YL15,
+		YL16,
+		YL17,
+		YL18,
+		YL19,
+		YL20,	
+		CARDCLOCK_ID
+	</sql>
+	
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{DATE},	
+		#{UPDATETIME},	
+		#{DOWNTIME},	
+		#{UPPLACE},	
+		#{DOWNPLACE},	
+		#{REMARK},	
+		#{YL1},	
+		#{YL2},	
+		#{YL3},	
+		#{YL4},
+		#{YL5},
+		#{YL6},	
+		#{YL7},	
+		#{YL8},	
+		#{YL9},
+		#{YL10},
+		#{YL11},	
+		#{YL12},	
+		#{YL13},	
+		#{YL14},
+		#{YL15},
+		#{YL16},	
+		#{YL17},	
+		#{YL18},	
+		#{YL19},
+		#{YL20},
+		#{CARDCLOCK_ID}
+	</sql>
+	
+	<!-- 新增-->
+	<insert id="save" parameterType="pd">
+		insert into 
+	<include refid="tableName"></include>
+		(
+	<include refid="Field"></include>
+		) values (
+	<include refid="FieldValue"></include>
+		)
+	</insert>
+	
+	<!-- 删除-->
+	<delete id="delete" parameterType="pd">
+		delete from
+		<include refid="tableName"></include>
+		where 
+			CARDCLOCK_ID = #{CARDCLOCK_ID}
+	</delete>
+	
+	<!-- 修改 -->
+	<update id="edit" parameterType="pd">
+		update
+		<include refid="tableName"></include>
+		set 
+			DATE = #{DATE},
+			UPDATETIME = #{UPDATETIME},
+			DOWNTIME = #{DOWNTIME},
+			UPPLACE = #{UPPLACE},
+			DOWNPLACE = #{DOWNPLACE},
+			REMARK = #{REMARK},
+			YL1 = #{YL1},
+			YL2 = #{YL2},
+			YL3 = #{YL3},
+			YL4 = #{YL4},
+			YL5 = #{YL5},
+			YL6 = #{YL6},
+			YL7 = #{YL7},
+			YL8 = #{YL8},
+			YL9 = #{YL9},
+			YL10 = #{YL10},
+			YL11 = #{YL11},
+			YL12 = #{YL12},
+			YL13 = #{YL13},
+			YL14 = #{YL14},
+			YL15 = #{YL15},
+			YL16 = #{YL16},
+			YL17 = #{YL17},
+			YL18 = #{YL18},
+			YL19 = #{YL19},
+			YL20 = #{YL20},
+		CARDCLOCK_ID = CARDCLOCK_ID
+		where 
+		CARDCLOCK_ID = #{CARDCLOCK_ID}
+	</update>
+	
+	<!-- 通过ID获取数据 -->
+	<select id="findById" parameterType="pd" resultType="pd">
+		select 
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
+		where 
+			CARDCLOCK_ID = #{CARDCLOCK_ID}
+	</select>
+	
+	<!-- 列表 -->
+	<select id="datalistPage" parameterType="page" resultType="pd">
+		SELECT c.*,u.NAME AS uNAME FROM TB_USERINFO u,TB_CARDCLOCK c WHERE u.USERNAME = c.DOWNTIME
+		<if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
+			and (
+					
+					c.DOWNTIME LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+					or
+					u.NAME LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%') 
+				
+				) 
+		</if>
+		<if test=" pd.lastStart!= null and pd.lastStart != '' ">
+			and c.UPDATETIME &gt;=  #{pd.lastStart }
+		</if>
+		
+		<if test=" pd.lastEnd!=null and pd.lastEnd !=''">
+			and c.UPDATETIME &lt;=  #{pd.lastEnd }
+		</if>
+		<if test="pd.name != null and pd.name != ''">
+			and c.YL2=#{pd.name}
+		</if>
+		<if test="pd.DOWNTIME != null and pd.DOWNTIME != ''">
+			and c.DOWNTIME=#{pd.DOWNTIME}
+		</if>
+		<if test="pd.YL6 != null and pd.YL6 != ''">
+			and c.YL6=#{pd.YL6}
+		</if>
+		<if test="pd.YL5 != null and pd.YL5 != ''">
+			and
+				(
+					c.YL5 =#{pd.YL5}
+				)
+		</if>
+		ORDER BY c.UPDATETIME DESC
+	</select>
+	
+	<!-- 列表(全部) -->
+	<select id="listAll" parameterType="pd" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
+	</select>
+	
+	<!-- 打卡所有人统计 -->
+	<select id="dakapeople" parameterType="page" resultType="pd">
+	SELECT 
+	  DISTINCT DOWNTIME
+	FROM
+	  tb_cardclock 
+	where
+		YL6=#{pd.YL6}
+	<if test="pd.YL5!=null and pd.YL5 !=''">
+		and YL5=#{pd.YL5 }
+	</if>	  
+  </select>
+  
+  <!-- 每月所有人的打卡统计 -->
+	<select id="dakatongji" parameterType="page" resultType="pd">
+  	SELECT 
+	  COUNT(DISTINCT (DATE)) statistics 
+	FROM
+	  tb_cardclock 
+	WHERE DOWNTIME = #{pd.DOWNTIME}
+	  AND YL6 = #{pd.YL6}
+	UNION
+	ALL 
+	SELECT 
+	  COUNT(YL2) statistics 
+	FROM
+	  tb_cardclock 
+	WHERE DOWNTIME = #{pd.DOWNTIME}
+	  AND YL2 = '迟到'
+	  AND YL6 = #{pd.YL6}
+	UNION
+	ALL 
+	SELECT 
+	  COUNT(YL2) statistics 
+	FROM
+	  tb_cardclock 
+	WHERE DOWNTIME = #{pd.DOWNTIME}
+	  AND YL2 = '早退' 
+	  AND YL6 = #{pd.YL6}
+	<if test="pd.DOWNTIME != null and pd.DOWNTIME != ''">
+			and DOWNTIME=#{pd.DOWNTIME}
+	</if>
+	<if test="pd.YL6 != null and pd.YL6 != ''">
+			and YL6=#{pd.YL6}
+	</if>
+	  
+  </select>
+  
+  <!-- 每月所有人的异常打卡统计 -->
+	<select id="yichangtongji" parameterType="page" resultType="pd">
+  	SELECT 
+	  COUNT(YL7) yc
+	FROM
+	  tb_cardclock 
+	WHERE DOWNTIME = #{pd.DOWNTIME}
+	  AND YL6 = #{pd.YL6}
+	  AND YL7 = '异常打卡' 
+  </select>
+  
+	<!-- 批量删除 -->
+	<delete id="deleteAll" parameterType="String">
+		delete from
+		<include refid="tableName"></include>
+		where 
+			CARDCLOCK_ID in
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+                 #{item}
+		</foreach>
+	</delete>
+	
+	<!-- fh313596790qq(青苔) -->
+</mapper>

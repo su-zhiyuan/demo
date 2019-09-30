@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="OrderMapper">
+	
+	<!--表名 -->
+	<sql id="tableName">
+		TB_ORDER
+	</sql>
+	
+	<!-- 字段 -->
+	<sql id="Field">
+		CREATE_BY,	
+		CREATE_TIME,	
+		STATUS,	
+		CAR_ID,	
+		CAR_NUM1,	
+		CAR_NUM2,	
+		CAR_NUM3,	
+		SERVICE_TYPE,	
+		CONTACT_ID,	
+		SERVICE_CONSULTANT,	
+		INSPECTOR,	
+		PART_TOTAL,	
+		HOURS_TOTAL,	
+		TOTAL,	
+		IN_TIME,	
+		OUT_TIME,	
+		REMARK,	
+		YL1,	
+		YL2,	
+		YL3,	
+		YL4,
+		YL5,
+		YL6,
+		YL7,
+		YL8,
+		YL9,
+		YL10,
+		YL11,	
+		YL12,	
+		YL13,	
+		YL14,
+		YL15,
+		YL16,
+		YL17,
+		YL18,
+		YL19,
+		YL20,	
+		ORDER_ID
+	</sql>
+	
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{CREATE_BY},	
+		#{CREATE_TIME},	
+		#{STATUS},	
+		#{CAR_ID},	
+		#{CAR_NUM1},	
+		#{CAR_NUM2},	
+		#{CAR_NUM3},	
+		#{SERVICE_TYPE},	
+		#{CONTACT_ID},	
+		#{SERVICE_CONSULTANT},	
+		#{INSPECTOR},	
+		#{PART_TOTAL},	
+		#{HOURS_TOTAL},	
+		#{TOTAL},	
+		#{IN_TIME},	
+		#{OUT_TIME},	
+		#{REMARK},	
+		#{YL1},	
+		#{YL2},	
+		#{YL3},	
+		#{YL4},
+		#{YL5},
+		#{YL6},	
+		#{YL7},	
+		#{YL8},	
+		#{YL9},
+		#{YL10},
+		#{YL11},	
+		#{YL12},	
+		#{YL13},	
+		#{YL14},
+		#{YL15},
+		#{YL16},	
+		#{YL17},	
+		#{YL18},	
+		#{YL19},
+		#{YL20},	
+		#{ORDER_ID}
+	</sql>
+	
+	<!-- 新增-->
+	<insert id="save" parameterType="pd">
+		insert into 
+	<include refid="tableName"></include>
+		(
+	<include refid="Field"></include>
+		) values (
+	<include refid="FieldValue"></include>
+		)
+	</insert>
+	
+	<!-- 删除-->
+	<!-- <delete id="delete" parameterType="pd">
+		delete from
+		<include refid="tableName"></include>
+		where 
+			ORDER_ID = #{ORDER_ID}
+	</delete> -->
+	
+	<delete id="delete" parameterType="pd">
+		delete from TB_ORDER where ORDER_ID = #{ORDER_ID};
+		delete from TB_RECEPTION where ORDER_ID = #{ORDER_ID};
+		delete from TB_INFORELAY where ORDER_ID = #{ORDER_ID};
+		delete from TB_DISPATCHING where ORDER_ID = #{ORDER_ID};
+		delete from TB_PARTOFFER where ORDER_ID = #{ORDER_ID};
+		delete from TB_PURCHASE where ORDER_ID = #{ORDER_ID};
+		delete from TB_SETTLEMENT where ORDER_ID = #{ORDER_ID};
+	</delete>
+	
+	<!-- 修改 -->
+	<update id="edit" parameterType="pd">
+		update
+		<include refid="tableName"></include>
+		set 
+			CREATE_BY = #{CREATE_BY},
+			CREATE_TIME = #{CREATE_TIME},
+			STATUS = #{STATUS},
+			CAR_ID = #{CAR_ID},
+			CAR_NUM1 = #{CAR_NUM1},
+			CAR_NUM2 = #{CAR_NUM2},
+			CAR_NUM3 = #{CAR_NUM3},
+			SERVICE_TYPE = #{SERVICE_TYPE},
+			CONTACT_ID = #{CONTACT_ID},
+			SERVICE_CONSULTANT = #{SERVICE_CONSULTANT},
+			INSPECTOR = #{INSPECTOR},
+			PART_TOTAL = #{PART_TOTAL},
+			HOURS_TOTAL = #{HOURS_TOTAL},
+			TOTAL = #{TOTAL},
+			IN_TIME = #{IN_TIME},
+			OUT_TIME = #{OUT_TIME},
+			REMARK = #{REMARK},
+			YL1 = #{YL1},
+			YL2 = #{YL2},
+			YL3 = #{YL3},
+			YL4 = #{YL4},
+			YL5 = #{YL5},
+			YL6 = #{YL6},
+			YL7 = #{YL7},
+			YL8 = #{YL8},
+			YL9 = #{YL9},
+			YL10 = #{YL10},
+			YL11 = #{YL11},
+			YL12 = #{YL12},
+			YL13 = #{YL13},
+			YL14 = #{YL14},
+			YL15 = #{YL15},
+			YL16 = #{YL16},
+			YL17 = #{YL17},
+			YL18 = #{YL18},
+			YL19 = #{YL19},
+			YL20 = #{YL20},
+		ORDER_ID = ORDER_ID
+		where 
+		ORDER_ID = #{ORDER_ID}
+	</update>
+	
+	<!-- 通过ID获取数据 -->
+	<select id="findById" parameterType="pd" resultType="pd">
+		select 
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
+		where 
+			ORDER_ID = #{ORDER_ID}
+	</select>
+	
+	<!-- 列表 -->
+	<select id="datalistPage" parameterType="page" resultType="pd">
+SELECT
+* 
+FROM 
+(SELECT o.*,u.`NAME` as uName FROM tb_userinfo u,tb_order o WHERE u.USERNAME = O.CREATE_BY) as un
+LEFT JOIN
+(SELECT o.ORDER_ID as oid,u.`NAME` as sName FROM tb_userinfo u,tb_order o WHERE u.USERNAME = O.SERVICE_CONSULTANT) as sn
+ON un.ORDER_ID = sn.oid
+left join 
+(SELECT o.ORDER_ID as iid,u.`NAME` as iName FROM tb_userinfo u,tb_order o WHERE u.USERNAME = O.INSPECTOR) as iu
+on un.ORDER_ID = iu.iid
+		where 1=1
+		<if test="pd.keywords != null and pd.keywords != ''"><!-- 关键词检索 -->
+			and
+				(
+					un.CREATE_BY LIKE CONCAT(CONCAT('%', #{pd.keywords,jdbcType=VARCHAR}),'%')
+					or 
+					un.SERVICE_CONSULTANT LIKE CONCAT(CONCAT('%', #{pd.keywords,jdbcType=VARCHAR}),'%') 
+					or 
+					un.INSPECTOR LIKE CONCAT(CONCAT('%', #{pd.keywords,jdbcType=VARCHAR}),'%')
+					or 
+					un.CAR_NUM1 LIKE CONCAT(CONCAT('%', #{pd.keywords,jdbcType=VARCHAR}),'%')
+					or 
+					un.CAR_NUM2 LIKE CONCAT(CONCAT('%', #{pd.keywords,jdbcType=VARCHAR}),'%')
+					or 
+					un.CAR_NUM3 LIKE CONCAT(CONCAT('%', #{pd.keywords,jdbcType=VARCHAR}),'%')
+					or
+					un.uName LIKE CONCAT(CONCAT('%', #{pd.keywords,jdbcType=VARCHAR}),'%')
+					or
+					sn.sName LIKE CONCAT(CONCAT('%', #{pd.keywords,jdbcType=VARCHAR}),'%')
+					or
+					iu.iName LIKE CONCAT(CONCAT('%', #{pd.keywords,jdbcType=VARCHAR}),'%')
+					
+
+				)
+		</if>
+		<if test="pd.lastStart != null and pd.lastStart != '' and pd.lastEnd != null and pd.lastEnd != ''">
+		and
+			(
+					un.CREATE_TIME &gt;= #{pd.lastStart} and
+					un.CREATE_TIME &lt;= #{pd.lastEnd}
+			)
+		</if>
+		<if test="pd.name != null and pd.name != ''">
+			and
+				(
+					un.SERVICE_TYPE LIKE CONCAT(CONCAT('%', #{pd.name,jdbcType=VARCHAR}),'%')
+				)
+		</if>
+		<if test="pd.status != null and pd.status != ''">
+			and
+				(
+					un.STATUS LIKE CONCAT(CONCAT('%', #{pd.status,jdbcType=VARCHAR}),'%')
+				)
+		</if>
+		<if test="pd.YL10 != null and pd.YL10 != ''">
+			and
+				(
+					un.YL10 =#{pd.YL10}
+				)
+		</if>
+		order by un.CREATE_TIME desc
+	</select>
+	
+	<!-- 列表(全部) -->
+	<select id="listAll" parameterType="pd" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
+		
+	</select>
+	
+	<!-- 批量删除 -->
+	<delete id="deleteAll" parameterType="String">
+		delete from
+		<include refid="tableName"></include>
+		where 
+			ORDER_ID in
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+                 #{item}
+		</foreach>
+	</delete>
+	
+	<select id="findByCondition" parameterType="page" resultType="pd">
+		SELECT
+		*
+		FROM 
+		<include refid="tableName"></include>
+		where
+		1=1 
+		<if test="pd.YL10 != null and pd.YL10 != ''">
+			and YL10 = #{pd.YL10}
+		</if>
+		<if test="pd.YL15 != null and pd.YL15 != ''">
+			and YL15 = #{pd.YL15}
+		</if>
+		<if test="pd.STATUS != null and pd.STATUS != ''">
+			and STATUS = #{pd.STATUS}
+		</if>
+		<if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
+			and
+				(
+					CREATE_BY LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+					or 
+					YL11 LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+				)
+		</if>
+		<if test="pd.lastStart != null and pd.lastStart != ''">
+			and CREATE_TIME &gt;=  #{pd.lastStart }
+		</if>
+		<if test=" pd.lastEnd!=null and pd.lastEnd !=''">
+			and CREATE_TIME &lt;=  #{pd.lastEnd }
+		</if>
+		<if test=" pd.CAR_ID!=null and pd.CAR_ID !=''">
+			and CAR_ID =  #{pd.CAR_ID }
+		</if>
+		order by CREATE_TIME desc
+	</select>
+	
+	<!-- fh313596790qq(青苔) -->
+</mapper>

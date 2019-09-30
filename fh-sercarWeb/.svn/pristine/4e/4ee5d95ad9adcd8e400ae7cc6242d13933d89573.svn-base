@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CarInfoMapper">
+	
+	<!--表名 -->
+	<sql id="tableName">
+		TB_CARINFO
+	</sql>
+	
+	<!-- 字段 -->
+	<sql id="Field">
+		CREATE_BY,	
+		CREATE_TIME,	
+		CAR_NUM1,	
+		CAR_NUM2,	
+		CAR_NUM3,	
+		CAR_BRANK,	
+		CAR_XL,	
+		CAR_YEAR,	
+		COLOR_OUT,	
+		COLOR_IN,	
+		USERNAME,	
+		REMARK,	
+		YL1,	
+		YL2,	
+		YL3,	
+		YL4,
+		YL5,
+		YL6,
+		YL7,
+		YL8,
+		YL9,
+		YL10,
+		YL11,	
+		YL12,	
+		YL13,	
+		YL14,
+		YL15,
+		YL16,
+		YL17,
+		YL18,
+		YL19,
+		YL20,	
+		CARINFO_ID
+	</sql>
+	
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{CREATE_BY},	
+		#{CREATE_TIME},	
+		#{CAR_NUM1},	
+		#{CAR_NUM2},	
+		#{CAR_NUM3},	
+		#{CAR_BRANK},	
+		#{CAR_XL},	
+		#{CAR_YEAR},	
+		#{COLOR_OUT},	
+		#{COLOR_IN},	
+		#{USERNAME},	
+		#{REMARK},	
+		#{YL1},	
+		#{YL2},	
+		#{YL3},	
+		#{YL4},
+		#{YL5},
+		#{YL6},	
+		#{YL7},	
+		#{YL8},	
+		#{YL9},
+		#{YL10},
+		#{YL11},	
+		#{YL12},	
+		#{YL13},	
+		#{YL14},
+		#{YL15},
+		#{YL16},	
+		#{YL17},	
+		#{YL18},	
+		#{YL19},
+		#{YL20},	
+		#{CARINFO_ID}
+	</sql>
+	
+	<!-- 新增-->
+	<insert id="save" parameterType="pd">
+		insert into 
+	<include refid="tableName"></include>
+		(
+	<include refid="Field"></include>
+		) values (
+	<include refid="FieldValue"></include>
+		)
+	</insert>
+	
+	<!-- 删除-->
+	<delete id="delete" parameterType="pd">
+		delete from
+		<include refid="tableName"></include>
+		where 
+			CARINFO_ID = #{CARINFO_ID}
+	</delete>
+	
+	<!-- 修改 -->
+	<update id="edit" parameterType="pd">
+		update
+		<include refid="tableName"></include>
+		set 
+			CREATE_BY = #{CREATE_BY},
+			CREATE_TIME = #{CREATE_TIME},
+			CAR_NUM1 = #{CAR_NUM1},
+			CAR_NUM2 = #{CAR_NUM2},
+			CAR_NUM3 = #{CAR_NUM3},
+			CAR_BRANK = #{CAR_BRANK},
+			CAR_XL = #{CAR_XL},
+			CAR_YEAR = #{CAR_YEAR},
+			COLOR_OUT = #{COLOR_OUT},
+			COLOR_IN = #{COLOR_IN},
+			USERNAME = #{USERNAME},
+			REMARK = #{REMARK},
+			YL1 = #{YL1},
+			YL2 = #{YL2},
+			YL3 = #{YL3},
+			YL4 = #{YL4},
+			YL5 = #{YL5},
+			YL6 = #{YL6},
+			YL7 = #{YL7},
+			YL8 = #{YL8},
+			YL9 = #{YL9},
+			YL10 = #{YL10},
+			YL11 = #{YL11},
+			YL12 = #{YL12},
+			YL13 = #{YL13},
+			YL14 = #{YL14},
+			YL15 = #{YL15},
+			YL16 = #{YL16},
+			YL17 = #{YL17},
+			YL18 = #{YL18},
+			YL19 = #{YL19},
+			YL20 = #{YL20},
+		CARINFO_ID = CARINFO_ID
+		where 
+		CARINFO_ID = #{CARINFO_ID}
+	</update>
+	
+	<!-- 通过ID获取数据 -->
+	<select id="findById" parameterType="pd" resultType="pd">
+		select 
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
+		where 
+			CARINFO_ID = #{CARINFO_ID}
+	</select>
+	
+	<!-- 列表 -->
+	<select id="datalistPage" parameterType="page" resultType="pd">
+		SELECT c.*,u.NAME AS uNAME FROM TB_USERINFO u,TB_CARINFO c WHERE u.USERNAME = c.CREATE_BY
+		<if test="pd.keywords!= null and pd.keywords != ''">
+			and
+				(
+					c.CREATE_BY LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+					 or 
+					c.CAR_NUM1 LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%') 
+					or 
+					c.CAR_NUM2 LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%') 
+					or 
+					c.CAR_NUM3 LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%') 
+					or 
+					c.CAR_BRANK LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%') 
+					or 
+					c.CAR_YEAR LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%') 
+					or 
+					u.NAME LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')  
+				)
+		</if>
+		<if test="pd.lastStart!= null and pd.lastStart != '' and pd.lastEnd!= null and pd.lastEnd != ''">
+			and
+				(
+					c.CREATE_TIME &gt;= #{pd.lastStart} and
+					c.CREATE_TIME &lt;= #{pd.lastEnd}
+				)
+		</if>
+		<if test="pd.name!= null and pd.name != ''">
+			and
+				(
+					c.CAR_XL= #{pd.name}
+				)
+		</if>
+		<if test="pd.YL10 != null and pd.YL10 != ''">
+			and
+				(
+					c.YL10 =#{pd.YL10}
+				)
+		</if>
+		ORDER BY c.CREATE_TIME DESC
+	</select>
+	
+	<!-- 列表(全部) -->
+	<select id="listAll" parameterType="pd" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
+	</select>
+	
+	<!-- 批量删除 -->
+	<delete id="deleteAll" parameterType="String">
+		delete from
+		<include refid="tableName"></include>
+		where 
+			CARINFO_ID in
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+                 #{item}
+		</foreach>
+	</delete>
+	
+	<!-- 只针对车牌，车架，发动机号进行查询 -->
+	<select id="datalist" parameterType="page" resultType="pd">
+		SELECT * FROM TB_CARINFO c WHERE 
+		1=1
+		<if test="pd.CAR_NUM1 != null and pd.CAR_NUM1 != ''">
+			and c.CAR_NUM1 = #{pd.CAR_NUM1}
+		</if>
+		<if test="pd.CAR_NUM2 != null and pd.CAR_NUM2 != ''">
+			and c.CAR_NUM2 = #{pd.CAR_NUM2}
+		</if>
+		<if test="pd.CAR_NUM3 != null and pd.CAR_NUM3 != ''">
+			and c.CAR_NUM3 = #{pd.CAR_NUM3}
+		</if>
+		<if test="pd.YL10 != null and pd.YL10 != ''">
+			and c.YL10 =#{pd.YL10}
+		</if>
+		ORDER BY c.CREATE_TIME DESC
+	</select>
+	
+	<!-- fh313596790qq(青苔) -->
+</mapper>

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CarMapper">
+	
+	<!--表名 -->
+	<sql id="tableName">
+		TB_CAR
+	</sql>
+	
+	<!-- 字段 -->
+	<sql id="Field">
+		TYPE,	
+		NUMBER,	
+		PINGPAI,	
+		CHELEI,	
+		CHEXING,	
+		CHEXI,	
+		YL1,	
+		YL2,	
+		YL3,	
+		YL4,	
+		YL5,	
+		YL6,	
+		YL7,	
+		YL8,	
+		YL9,	
+		YL10,	
+		YL11,	
+		YL12,	
+		YL13,	
+		YL14,	
+		YL15,	
+		YL16,	
+		YL17,	
+		YL18,	
+		YL19,	
+		YL20,	
+		CAR_ID
+	</sql>
+	
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{TYPE},	
+		#{NUMBER},	
+		#{PINGPAI},	
+		#{CHELEI},	
+		#{CHEXING},	
+		#{CHEXI},	
+		#{YL1},	
+		#{YL2},	
+		#{YL3},	
+		#{YL4},	
+		#{YL5},	
+		#{YL6},	
+		#{YL7},	
+		#{YL8},	
+		#{YL9},	
+		#{YL10},	
+		#{YL11},	
+		#{YL12},	
+		#{YL13},	
+		#{YL14},	
+		#{YL15},	
+		#{YL16},	
+		#{YL17},	
+		#{YL18},	
+		#{YL19},	
+		#{YL20},	
+		#{CAR_ID}
+	</sql>
+	
+	<!-- 新增-->
+	<insert id="save" parameterType="pd">
+		insert into 
+	<include refid="tableName"></include>
+		(
+	<include refid="Field"></include>
+		) values (
+	<include refid="FieldValue"></include>
+		)
+	</insert>
+	
+	<!-- 删除-->
+	<delete id="delete" parameterType="pd">
+		delete from
+		<include refid="tableName"></include>
+		where 
+			CAR_ID = #{CAR_ID}
+	</delete>
+	
+	<!-- 修改 -->
+	<update id="edit" parameterType="pd">
+		update
+		<include refid="tableName"></include>
+		set 
+			TYPE = #{TYPE},
+			NUMBER = #{NUMBER},
+			PINGPAI = #{PINGPAI},
+			CHELEI = #{CHELEI},
+			CHEXING = #{CHEXING},
+			CHEXI = #{CHEXI},
+			YL1 = #{YL1},
+		CAR_ID = CAR_ID
+		where 
+		CAR_ID = #{CAR_ID}
+	</update>
+	
+	<!-- 通过ID获取数据 -->
+	<select id="findById" parameterType="pd" resultType="pd">
+		select 
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
+		where 
+			CAR_ID = #{CAR_ID}
+	</select>
+	
+	<!-- 列表 -->
+	<select id="datalistPage" parameterType="page" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
+		where 1=1
+		<if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
+			and
+				(
+				
+					PINGPAI LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+					 or 
+					CHELEI LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%') 
+					 or 
+					CHEXI LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%') 
+				
+				)
+		</if>
+		<if test="pd.name!= null and pd.name != ''">
+			and
+				(
+					CHEXING = #{pd.name}
+				)
+		</if>
+	</select>
+	
+	<!-- 列表(全部) -->
+	<select id="listAll" parameterType="pd" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
+	</select>
+	
+	<!-- 批量删除 -->
+	<delete id="deleteAll" parameterType="String">
+		delete from
+		<include refid="tableName"></include>
+		where 
+			CAR_ID in
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+                 #{item}
+		</foreach>
+	</delete>
+	
+	<!-- fh313596790qq(青苔) -->
+</mapper>

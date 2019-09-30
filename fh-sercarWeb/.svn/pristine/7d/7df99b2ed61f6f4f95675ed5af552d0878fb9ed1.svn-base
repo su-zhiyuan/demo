@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ReceptionMapper">
+	
+	<!--表名 -->
+	<sql id="tableName">
+		TB_RECEPTION
+	</sql>
+	
+	<!-- 字段 -->
+	<sql id="Field">
+		ORDER_ID,	
+		CREATE_BY,	
+		CREATE_TIME,	
+		CHECKED_BY,	
+		CHECKED_TIME,	
+		SERVICE_ADVISOR,	
+		MILEAGE,	
+		STATUS,	
+		IS_AGREE,	
+		AUTHORIZATION_VOUCHER,	
+		REMARK,	
+		YL1,	
+		YL2,	
+		YL3,	
+		YL4,
+		YL5,
+		YL6,
+		YL7,
+		YL8,
+		YL9,
+		YL10,
+		YL11,	
+		YL12,	
+		YL13,	
+		YL14,
+		YL15,
+		YL16,
+		YL17,
+		YL18,
+		YL19,
+		YL20,	
+		RECEPTION_ID
+	</sql>
+	
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{ORDER_ID},	
+		#{CREATE_BY},	
+		#{CREATE_TIME},	
+		#{CHECKED_BY},	
+		#{CHECKED_TIME},	
+		#{SERVICE_ADVISOR},	
+		#{MILEAGE},	
+		#{STATUS},	
+		#{IS_AGREE},	
+		#{AUTHORIZATION_VOUCHER},	
+		#{REMARK},	
+		#{YL1},	
+		#{YL2},	
+		#{YL3},	
+		#{YL4},
+		#{YL5},
+		#{YL6},	
+		#{YL7},	
+		#{YL8},	
+		#{YL9},
+		#{YL10},
+		#{YL11},	
+		#{YL12},	
+		#{YL13},	
+		#{YL14},
+		#{YL15},
+		#{YL16},	
+		#{YL17},	
+		#{YL18},	
+		#{YL19},
+		#{YL20},	
+		#{RECEPTION_ID}
+	</sql>
+	
+	<!-- 新增-->
+	<insert id="save" parameterType="pd">
+		insert into 
+	<include refid="tableName"></include>
+		(
+	<include refid="Field"></include>
+		) values (
+	<include refid="FieldValue"></include>
+		)
+	</insert>
+	
+	<!-- 删除-->
+	<delete id="delete" parameterType="pd">
+		delete from
+		<include refid="tableName"></include>
+		where 
+			RECEPTION_ID = #{RECEPTION_ID}
+	</delete>
+	
+	<!-- 修改 -->
+	<update id="edit" parameterType="pd">
+		update
+		<include refid="tableName"></include>
+		set 
+			ORDER_ID = #{ORDER_ID},
+			CREATE_BY = #{CREATE_BY},
+			CREATE_TIME = #{CREATE_TIME},
+			CHECKED_BY = #{CHECKED_BY},
+			CHECKED_TIME = #{CHECKED_TIME},
+			SERVICE_ADVISOR = #{SERVICE_ADVISOR},
+			MILEAGE = #{MILEAGE},
+			STATUS = #{STATUS},
+			IS_AGREE = #{IS_AGREE},
+			AUTHORIZATION_VOUCHER = #{AUTHORIZATION_VOUCHER},
+			REMARK = #{REMARK},
+			YL1 = #{YL1},
+			YL2 = #{YL2},
+			YL3 = #{YL3},
+			YL4 = #{YL4},
+			YL5 = #{YL5},
+			YL6 = #{YL6},
+			YL7 = #{YL7},
+			YL8 = #{YL8},
+			YL9 = #{YL9},
+			YL10 = #{YL10},
+			YL11 = #{YL11},
+			YL12 = #{YL12},
+			YL13 = #{YL13},
+			YL14 = #{YL14},
+			YL15 = #{YL15},
+			YL16 = #{YL16},
+			YL17 = #{YL17},
+			YL18 = #{YL18},
+			YL19 = #{YL19},
+			YL20 = #{YL20},
+		RECEPTION_ID = RECEPTION_ID
+		where 
+		RECEPTION_ID = #{RECEPTION_ID}
+	</update>
+	
+	<!-- 通过ID获取数据 -->
+	<select id="findById" parameterType="pd" resultType="pd">
+		select 
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
+		where 
+			RECEPTION_ID = #{RECEPTION_ID}
+	</select>
+	
+	<!-- 列表 -->
+	<select id="datalistPage" parameterType="page" resultType="pd">
+	SELECT * FROM
+(SELECT t.*,u.`NAME` as uName FROM tb_userinfo u,tb_reception t WHERE u.USERNAME = t.CREATE_BY) as un
+LEFT JOIN
+(SELECT t.RECEPTION_ID as rid,u.`NAME` as cName FROM tb_userinfo u,tb_reception t WHERE u.USERNAME = t.CHECKED_BY) as cn
+ON un.RECEPTION_ID = cn.rid
+left join 
+(SELECT t.RECEPTION_ID as iid,u.`NAME` as iName FROM tb_userinfo u,tb_reception t WHERE u.USERNAME = t.SERVICE_ADVISOR) as iu
+on un.RECEPTION_ID = iu.iid
+ where 1=1
+		<if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
+			and
+				(
+					un.ORDER_ID LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+					 or 
+					un.CREATE_BY LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%') 
+					or 
+					un.CHECKED_BY LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+					or 
+					un.SERVICE_ADVISOR LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+					or 
+					un.AUTHORIZATION_VOUCHER LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+					or
+					un.uName LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+					or
+					cn.cName LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+					or
+					iu.iName LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+				)
+		</if>
+		<if test="pd.lastStart != null and pd.lastStart != '' and pd.lastEnd != null and pd.lastEnd != ''">
+		and
+			(
+					un.CREATE_TIME &gt;= #{pd.lastStart} and
+					un.CREATE_TIME &lt;= #{pd.lastEnd}
+			)
+		</if>
+		<if test="pd.name!= null and pd.name != ''">
+			and
+				(
+					un.STATUS LIKE CONCAT(CONCAT('%', #{pd.name}),'%')
+				)
+		</if>
+		<if test="pd.is_agree!= null and pd.is_agree != ''">
+			and
+				(
+					un.IS_AGREE LIKE CONCAT(CONCAT('%', #{pd.is_agree}),'%')
+				)
+		</if>
+		<if test="pd.YL10 != null and pd.YL10 != ''">
+			and
+				(
+					un.YL10 =#{pd.YL10}
+				)
+		</if>
+		order by un.CREATE_TIME desc
+	</select>
+	
+	<!-- 列表(全部) -->
+	<select id="listAll" parameterType="pd" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
+	</select>
+	
+	<!-- 批量删除 -->
+	<delete id="deleteAll" parameterType="String">
+		delete from
+		<include refid="tableName"></include>
+		where 
+			RECEPTION_ID in
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+                 #{item}
+		</foreach>
+	</delete>
+	
+	<select id="findByCondition" parameterType="page" resultType="pd">
+		SELECT
+		*
+		FROM 
+		<include refid="tableName"></include>
+		where
+		1=1 
+		<if test="pd.ORDER_ID != null and pd.ORDER_ID != ''">
+			and ORDER_ID = #{pd.ORDER_ID}
+		</if>
+		<if test="pd.YL10 != null and pd.YL10 != ''">
+			and YL10 = #{pd.YL10}
+		</if>
+		order by CREATE_TIME desc
+	</select>
+
+	<!-- fh313596790qq(青苔) -->
+</mapper>

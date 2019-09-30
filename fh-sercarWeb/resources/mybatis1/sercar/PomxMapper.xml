@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PomxMapper">
+	
+	<!--表名 -->
+	<sql id="tableName">
+		TB_POMX
+	</sql>
+	
+	<!-- 字段 -->
+	<sql id="Field">
+		PART_OFFER_ID,	
+		SETT_ID,	
+		PART_NAME,	
+		PART_COUNT,	
+		PART_NUM,	
+		PRICE,	
+		TOTAL,	
+		DELIVERY,	
+		REMARK,	
+		YL1,	
+		YL2,	
+		YL3,	
+		YL4,
+		YL5,
+		YL6,
+		YL7,
+		YL8,
+		YL9,
+		YL10,
+		YL11,	
+		YL12,	
+		YL13,	
+		YL14,
+		YL15,
+		YL16,
+		YL17,
+		YL18,
+		YL19,
+		YL20,	
+		IS_PUR,	
+		PUR_COUNT,	
+		POMX_ID
+	</sql>
+	
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{PART_OFFER_ID},	
+		#{SETT_ID},	
+		#{PART_NAME},	
+		#{PART_COUNT},	
+		#{PART_NUM},	
+		#{PRICE},	
+		#{TOTAL},	
+		#{DELIVERY},	
+		#{REMARK},	
+		#{YL1},	
+		#{YL2},	
+		#{YL3},	
+		#{YL4},
+		#{YL5},
+		#{YL6},	
+		#{YL7},	
+		#{YL8},	
+		#{YL9},
+		#{YL10},
+		#{YL11},	
+		#{YL12},	
+		#{YL13},	
+		#{YL14},
+		#{YL15},
+		#{YL16},	
+		#{YL17},	
+		#{YL18},	
+		#{YL19},
+		#{YL20},	
+		#{IS_PUR},	
+		#{PUR_COUNT},	
+		#{POMX_ID}
+	</sql>
+	
+	<!-- 新增-->
+	<insert id="save" parameterType="pd">
+		insert into 
+	<include refid="tableName"></include>
+		(
+	<include refid="Field"></include>
+		) values (
+	<include refid="FieldValue"></include>
+		)
+	</insert>
+	
+	<!-- 删除-->
+	<delete id="delete" parameterType="pd">
+		delete from
+		<include refid="tableName"></include>
+		where 
+			POMX_ID = #{POMX_ID}
+	</delete>
+	
+	<!-- 修改 -->
+	<update id="edit" parameterType="pd">
+		update
+		<include refid="tableName"></include>
+		set 
+			PART_OFFER_ID = #{PART_OFFER_ID},
+			SETT_ID = #{SETT_ID},
+			PART_NAME = #{PART_NAME},
+			PART_COUNT = #{PART_COUNT},
+			PART_NUM = #{PART_NUM},
+			PRICE = #{PRICE},
+			TOTAL = #{TOTAL},
+			DELIVERY = #{DELIVERY},
+			REMARK = #{REMARK},
+			YL1 = #{YL1},
+			YL2 = #{YL2},
+			YL3 = #{YL3},
+			YL4 = #{YL4},
+			YL5 = #{YL5},
+			YL6 = #{YL6},
+			YL7 = #{YL7},
+			YL8 = #{YL8},
+			YL9 = #{YL9},
+			YL10 = #{YL10},
+			YL11 = #{YL11},
+			YL12 = #{YL12},
+			YL13 = #{YL13},
+			YL14 = #{YL14},
+			YL15 = #{YL15},
+			YL16 = #{YL16},
+			YL17 = #{YL17},
+			YL18 = #{YL18},
+			YL19 = #{YL19},
+			YL20 = #{YL20},
+			IS_PUR = #{IS_PUR},
+			PUR_COUNT = #{PUR_COUNT},
+		POMX_ID = POMX_ID
+		where 
+		POMX_ID = #{POMX_ID}
+	</update>
+	
+	<!-- 结算单明细修改 -->
+	<!-- UPDATE table_name SET field1=new-value1, field2=new-value2 -->
+	<update id="edit_mx" parameterType="pd">
+		update 
+		<include refid="tableName"></include>
+		<set>
+			<if test="PART_OFFER_ID!= null and PART_OFFER_ID != ''">
+				PART_OFFER_ID = #{PART_OFFER_ID},
+			</if>
+			<if test="SETT_ID!= null and SETT_ID != ''">
+				SETT_ID = #{SETT_ID},
+			</if>
+			<if test="PART_NAME!= null and PART_NAME != ''">
+				PART_NAME = #{PART_NAME},
+			</if>
+			<if test="PART_COUNT!= null and PART_COUNT != ''">
+				PART_COUNT = #{PART_COUNT},
+			</if>
+			<if test="PART_NUM!= null and PART_NUM != ''">
+				PART_NUM = #{PART_NUM},
+			</if>
+			<if test="PRICE!= null and PRICE != ''">
+				PRICE = #{PRICE},
+			</if>
+			<if test="TOTAL!= null and TOTAL != ''">
+				TOTAL = #{TOTAL},
+			</if>
+			<if test="DELIVERY!= null and DELIVERY != ''">
+				DELIVERY = #{DELIVERY},
+			</if>
+			<if test="REMARK!= null and REMARK != ''">
+				REMARK = #{REMARK},
+			</if>
+			<if test="YL1!= null and YL1 != ''">
+				YL1 = #{YL1},
+			</if>
+			<if test="YL2!= null and YL2 != ''">
+				YL2 = #{YL2},
+			</if>
+			<if test="YL3!= null and YL3 != ''">
+				YL3 = #{YL3},
+			</if>
+			<if test="YL4!= null and YL4 != ''">
+				YL4 = #{YL4},
+			</if>
+			<if test="YL5!= null and YL5 != ''">
+				YL5 = #{YL5},
+			</if>
+			<if test="YL6!= null and YL6 != ''">
+				YL6 = #{YL6},
+			</if>
+			<if test="YL7!= null and YL7 != ''">
+				YL7 = #{YL7},
+			</if>
+			<if test="YL8!= null and YL8 != ''">
+				YL8 = #{YL8},
+			</if>
+			<if test="YL9!= null and YL9 != ''">
+				YL9 = #{YL9},
+			</if>
+			<if test="YL10!= null and YL10 != ''">
+				YL10 = #{YL10},
+			</if>
+			<if test="YL11!= null and YL11 != ''">
+				YL11 = #{YL11},
+			</if>
+			<if test="YL12!= null and YL12 != ''">
+				YL12 = #{YL12},
+			</if>
+			<if test="YL13!= null and YL13 != ''">
+				YL13 = #{YL13},
+			</if>
+			<if test="YL14!= null and YL14 != ''">
+				YL14 = #{YL14},
+			</if>
+			<if test="YL15!= null and YL15 != ''">
+				YL15 = #{YL15},
+			</if>
+			<if test="YL16!= null and YL16 != ''">
+				YL16 = #{YL16},
+			</if>
+			<if test="YL17!= null and YL17 != ''">
+				YL17 = #{YL17},
+			</if>
+			<if test="YL18!= null and YL18 != ''">
+				YL18 = #{YL18},
+			</if>
+			<if test="YL19!= null and YL19 != ''">
+				YL19 = #{YL19},
+			</if>
+			<if test="YL20!= null and YL20 != ''">
+				YL20 = #{YL20},
+			</if>
+			<if test="IS_PUR!= null and IS_PUR != ''">
+				IS_PUR = #{IS_PUR},
+			</if>
+			<if test="PUR_COUNT!= null and PUR_COUNT != ''">
+				PUR_COUNT = #{PUR_COUNT},
+			</if>
+		</set>
+		where 
+		POMX_ID = #{POMX_ID}
+	</update>
+	
+	
+	<!-- 通过ID获取数据 -->
+	<select id="findById" parameterType="pd" resultType="pd">
+		select 
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
+		where 
+			POMX_ID = #{POMX_ID}
+	</select>
+	
+	<!-- 列表 -->
+	<select id="datalistPage" parameterType="page" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
+		where 1=1
+		<if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
+			and
+				(
+				
+					PART_NAME LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+					 or 
+					PART_NUM LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%') 
+				
+				)
+		</if>
+		
+		<if test="pd.ORDER_ID != null and pd.ORDER_ID != ''"><!-- 关键词检索 -->
+			and
+				(
+					YL2 = #{pd.ORDER_ID}
+				)
+		</if>
+		<if test="pd.YL10 != null and pd.YL10 != ''">
+			and
+				(
+					YL10 =#{pd.YL10}
+				)
+		</if>
+	</select>
+	
+	<!-- 列表(全部) -->
+	<select id="listAll" parameterType="pd" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
+	</select>
+	
+	<!-- 批量删除 -->
+	<delete id="deleteAll" parameterType="String">
+		delete from
+		<include refid="tableName"></include>
+		where 
+			POMX_ID in
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+                 #{item}
+		</foreach>
+	</delete>
+	
+	
+	
+	
+	<!-- 采购详情表 -->
+	<select id="purchaseMx" parameterType="String" resultType="pd">
+		select 
+		<include refid="Field"></include> 
+		from tb_pomx where YL2 = #{ORDER_ID}
+	</select>
+	
+	
+	<select id="findByCondition" parameterType="page" resultType="pd">
+		SELECT
+		*
+		FROM 
+		<include refid="tableName"></include>
+		where
+		1=1 
+		<if test="pd.PART_OFFER_ID != null and pd.PART_OFFER_ID != ''">
+			and PART_OFFER_ID = #{pd.PART_OFFER_ID}
+		</if>
+		<if test="pd.YL2 != null and pd.YL2 != ''">
+			and YL2 = #{pd.YL2}
+		</if>
+	</select>
+	
+	
+	<!-- fh313596790qq(青苔) -->
+</mapper>
